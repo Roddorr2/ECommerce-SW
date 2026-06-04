@@ -12,6 +12,21 @@ spring.jpa.hibernate.ddl-auto=create-drop
 
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
 
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=your-email@gmail.com
+spring.mail.password=your-app-password
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+spring.mail.properties.mail.smtp.starttls.required=true
+spring.mail.properties.mail.smtp.connectiontimeout=5000
+spring.mail.properties.mail.smtp.timeout=5000
+spring.mail.properties.mail.smtp.writetimeout=5000
+
+auth.2fa.codigo.duracion-minutos=10
+auth.2fa.codigo.max-intentos=3
+auth.2fa.rate-limit.max-codigos-por-hora=3
+
 app.jwt.secret=replace_with_your_own_generated_secret_key
 app.jwt.expiration-ms=86400000
 
