@@ -1,7 +1,7 @@
 package com.ecommerce.app.infrastructure.config;
 
-import com.ecommerce.app.domain.models.Usuario;
-import com.ecommerce.app.domain.repository.UsuarioRepository;
+import com.ecommerce.app.shared.domain.model.Usuario;
+import com.ecommerce.app.shared.domain.port.UsuarioPort;
 import com.ecommerce.app.infrastructure.security.JwtAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,24 +28,24 @@ import java.util.List;
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
-    private final UsuarioRepository usuarioRepository;
+    private final UsuarioPort usuarioPort;
 
-    public SecurityConfig(UsuarioRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
+    public SecurityConfig(UsuarioPort usuarioPort) {
+        this.usuarioPort = usuarioPort;
     }
 
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> {
-            Usuario usuario = usuarioRepository.findByEmailWithRol(username)
+            Usuario usuario = usuarioPort.findByCorreo(username)
                     .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado."));
-            if ("Desactivado".equalsIgnoreCase(usuario.getEstado())) {
+            if (!usuario.isActivo()) {
                 throw new UsernameNotFoundException("Usuario no encontrado.");
             }
 
             return User.builder()
-                    .username(usuario.getEmail())
-                    .password(usuario.getPasswordHash())
+                    .username(usuario.getCorreo())
+                    .password(usuario.getContrasena())
                     .authorities(usuario.getRol().getNombre())
                     .build();
         };

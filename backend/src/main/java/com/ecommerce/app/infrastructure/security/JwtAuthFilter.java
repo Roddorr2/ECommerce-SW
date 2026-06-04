@@ -29,12 +29,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(
-            @NonNull HttpServletRequest request,
-            @NonNull HttpServletResponse response,
-            @NonNull FilterChain filterChain
-    ) throws ServletException, IOException {
-
+    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         String header = request.getHeader("Authorization");
         String token = null;
         String username = null;
@@ -54,21 +49,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
             if (jwtUtil.validateToken(token)) {
 
-                 System.out.println("========== JWT FILTER ==========");
-                System.out.println("TOKEN BRUTO: " + token);
-                System.out.println("USERNAME EXTRAÍDO: " + username);
-
                 var claims = jwtUtil.getAllClaims(token);
-                System.out.println("CLAIMS COMPLETOS: " + claims);
 
                 String rol = claims.get("authorities", String.class);
-                System.out.println("ROL EN TOKEN: " + rol);
-
-                System.out.println("USERDETAILS AUTHORITIES (BD): " + userDetails.getAuthorities());
-                System.out.println("AUTHORITY INYECTADA: " + new SimpleGrantedAuthority(rol));
-
-                System.out.println("AUTH CONTEXT ANTES: " + SecurityContextHolder.getContext().getAuthentication());
-                // ============================
 
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(
