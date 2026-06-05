@@ -5,6 +5,7 @@ import java.security.SignatureException;
 import java.sql.SQLIntegrityConstraintViolationException;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import org.hibernate.TransientPropertyValueException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -89,5 +90,13 @@ public class GlobalExceptionHandler {
     			"Ya existe un registro con esa información."
     	);
     	return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
+
+    @ExceptionHandler(TransientPropertyValueException.class)
+    public ResponseEntity<ApiErrorResponse> handleTransientPropertyValue(TransientPropertyValueException ex) {
+        String mensaje = String.format("La propiedad '%s' hace referencia a un objeto transitorio no guardado de tipo '%s'.",
+                ex.getPropertyName(), ex.getTransientEntityName());
+        ApiErrorResponse error = new ApiErrorResponse(HttpStatus.BAD_REQUEST.value(), mensaje);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 }
