@@ -1,0 +1,21 @@
+# IDE / Editor Files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Backend Build & Config Files
+backend/bin/
+backend/target/
+backend/src/main/resources/application.local.properties
+backend/src/main/resources/application.prod.properties
+
+# Frontend Build & Dependencies
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
