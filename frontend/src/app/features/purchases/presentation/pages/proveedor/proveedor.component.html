@@ -1,0 +1,209 @@
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+
+<div class="max-w-7xl mx-auto px-6 py-6 md:px-12 flex-1 w-full">
+  <!-- Header Section -->
+  <div class="mb-8 border-b border-slate-100 pb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div>
+      <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Gestión de Proveedores</h2>
+      <p class="mt-1.5 text-sm text-slate-500">Administra los proveedores de abastecimiento de componentes.</p>
+    </div>
+    <div class="flex items-center gap-3 self-start sm:self-center">
+      <input
+        type="text"
+        pInputText
+        placeholder="Buscar proveedores..."
+        (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+        class="rounded-xl border-slate-200 text-sm h-10 w-48 sm:w-64"
+      />
+      <button
+        (click)="abrirNuevo()"
+        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-primary hover:bg-brand-primary-hover text-white font-semibold text-sm transition-all duration-200 cursor-pointer border-0 shadow-md shadow-brand-primary/10"
+      >
+        <i class="pi pi-plus"></i>
+        <span>Nuevo Proveedor</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Table Section -->
+  <div class="bg-white rounded-2xl border border-slate-100 shadow-premium overflow-hidden">
+    <p-table
+      #dt
+      [value]="proveedores()"
+      [loading]="cargando()"
+      [paginator]="true"
+      [rows]="8"
+      [rowsPerPageOptions]="[5, 8, 15]"
+      [rowHover]="true"
+      styleClass="p-datatable-sm"
+      [globalFilterFields]="['nombre', 'telefono', 'email', 'direccion', 'tipoProveedor']"
+    >
+      <ng-template pTemplate="header">
+        <tr class="bg-slate-50/75 border-b border-slate-100 text-xs font-bold text-slate-500 uppercase tracking-wider">
+          <th pSortableColumn="id" class="py-4 px-6">ID <p-sortIcon field="id"></p-sortIcon></th>
+          <th pSortableColumn="nombre" class="py-4 px-6">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
+          <th pSortableColumn="telefono" class="py-4 px-6">Teléfono <p-sortIcon field="telefono"></p-sortIcon></th>
+          <th pSortableColumn="email" class="py-4 px-6">Email <p-sortIcon field="email"></p-sortIcon></th>
+          <th pSortableColumn="direccion" class="py-4 px-6">Dirección <p-sortIcon field="direccion"></p-sortIcon></th>
+          <th pSortableColumn="tipoProveedor" class="py-4 px-6">Tipo <p-sortIcon field="tipoProveedor"></p-sortIcon></th>
+          <th class="py-4 px-6 text-center" style="width: 10rem">Acciones</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-prov>
+        <tr class="hover:bg-slate-50/50 transition-colors text-sm">
+          <td class="py-4 px-6 font-bold text-slate-700">#{{ prov.id }}</td>
+          <td class="py-4 px-6 font-semibold text-slate-800">{{ prov.nombre }}</td>
+          <td class="py-4 px-6 text-slate-600">{{ prov.telefono }}</td>
+          <td class="py-4 px-6 text-slate-500 font-mono">{{ prov.email }}</td>
+          <td class="py-4 px-6 text-slate-600">{{ prov.direccion ?? '—' }}</td>
+          <td class="py-4 px-6 font-medium text-slate-600">{{ prov.tipoProveedor }}</td>
+          <td class="py-4 px-6">
+            <div class="flex items-center justify-center gap-2">
+              <button
+                (click)="editar(prov)"
+                class="w-8 h-8 rounded-lg bg-amber-50 hover:bg-amber-500 text-amber-600 hover:text-white flex items-center justify-center transition-all duration-200 cursor-pointer border-0"
+                title="Editar proveedor"
+              >
+                <i class="pi pi-pencil text-xs"></i>
+              </button>
+              <button
+                (click)="confirmarEliminar(prov)"
+                class="w-8 h-8 rounded-lg bg-red-50 hover:bg-red-500 text-red-500 hover:text-white flex items-center justify-center transition-all duration-200 cursor-pointer border-0"
+                title="Eliminar proveedor"
+              >
+                <i class="pi pi-trash text-xs"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="7" class="text-center py-8 text-slate-400 font-medium">No hay proveedores registrados.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <!-- Dialog Form -->
+  <p-dialog
+    [visible]="mostrarDialog()"
+    (visibleChange)="mostrarDialog.set($event)"
+    [header]="editando() ? 'Editar Proveedor' : 'Nuevo Proveedor'"
+    [modal]="true"
+    [draggable]="false"
+    [resizable]="false"
+    [style]="{ width: '500px' }"
+    styleClass="rounded-2xl overflow-hidden shadow-2xl border border-slate-100"
+    (onHide)="cancelar()"
+  >
+    <form [formGroup]="form" (ngSubmit)="guardar()" class="space-y-6 pt-2">
+      <!-- Nombre -->
+      <div class="flex flex-col gap-1.5">
+        <label for="nombre" class="text-xs font-bold uppercase tracking-wider text-slate-500">Nombre <span class="text-red-500">*</span></label>
+        <input
+          id="nombre"
+          type="text"
+          pInputText
+          formControlName="nombre"
+          placeholder="Nombre del proveedor"
+          class="w-full rounded-xl border-slate-200 text-sm h-10"
+          [class.border-red-500]="form.get('nombre')?.invalid && form.get('nombre')?.touched"
+        />
+        @if (form.get('nombre')?.invalid && form.get('nombre')?.touched) {
+          <small class="text-red-500 text-xs font-medium">El nombre es obligatorio.</small>
+        }
+      </div>
+
+      <!-- Teléfono -->
+      <div class="flex flex-col gap-1.5">
+        <label for="telefono" class="text-xs font-bold uppercase tracking-wider text-slate-500">Teléfono <span class="text-red-500">*</span></label>
+        <input
+          id="telefono"
+          type="text"
+          pInputText
+          formControlName="telefono"
+          placeholder="Ej. 987654321"
+          class="w-full rounded-xl border-slate-200 text-sm h-10"
+          [class.border-red-500]="form.get('telefono')?.invalid && form.get('telefono')?.touched"
+        />
+        @if (form.get('telefono')?.invalid && form.get('telefono')?.touched) {
+          <small class="text-red-500 text-xs font-medium">El teléfono es obligatorio.</small>
+        }
+      </div>
+
+      <!-- Email -->
+      <div class="flex flex-col gap-1.5">
+        <label for="correo" class="text-xs font-bold uppercase tracking-wider text-slate-500">Email <span class="text-red-500">*</span></label>
+        <input
+          id="correo"
+          type="email"
+          pInputText
+          formControlName="correo"
+          placeholder="correo@proveedor.com"
+          class="w-full rounded-xl border-slate-200 text-sm h-10"
+          [class.border-red-500]="form.get('correo')?.invalid && form.get('correo')?.touched"
+        />
+        @if (form.get('correo')?.invalid && form.get('correo')?.touched) {
+          <small class="text-red-500 text-xs font-medium">Ingrese un email válido.</small>
+        }
+      </div>
+
+      <!-- Dirección -->
+      <div class="flex flex-col gap-1.5">
+        <label for="direccion" class="text-xs font-bold uppercase tracking-wider text-slate-500">Dirección</label>
+        <input
+          id="direccion"
+          type="text"
+          pInputText
+          formControlName="direccion"
+          placeholder="Dirección (opcional)"
+          class="w-full rounded-xl border-slate-200 text-sm h-10"
+        />
+      </div>
+
+      <!-- Tipo de proveedor -->
+      <div class="flex flex-col gap-1.5">
+        <label for="tipoProveedorId" class="text-xs font-bold uppercase tracking-wider text-slate-500">Tipo de proveedor <span class="text-red-500">*</span></label>
+        <p-select
+          id="tipoProveedorId"
+          formControlName="tipoProveedorId"
+          [options]="tiposProveedor()"
+          optionLabel="nombre"
+          optionValue="id"
+          placeholder="Seleccione un tipo"
+          styleClass="w-full rounded-xl border-slate-200 text-sm h-10 flex items-center"
+          [class.border-red-500]="form.get('tipoProveedorId')?.invalid && form.get('tipoProveedorId')?.touched"
+        ></p-select>
+        @if (form.get('tipoProveedorId')?.invalid && form.get('tipoProveedorId')?.touched) {
+          <small class="text-red-500 text-xs font-medium">El tipo de proveedor es obligatorio.</small>
+        }
+      </div>
+
+      <!-- Action buttons -->
+      <div class="flex justify-end gap-3 mt-8 border-t border-slate-100 pt-5">
+        <button
+          (click)="cancelar()"
+          type="button"
+          class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-sm transition-all duration-200 cursor-pointer bg-transparent border-slate-200"
+        >
+          <i class="pi pi-times"></i>
+          <span>Cancelar</span>
+        </button>
+        <button
+          type="submit"
+          [disabled]="form.invalid || guardando()"
+          class="px-5 py-2.5 rounded-xl bg-brand-primary hover:bg-brand-primary-hover disabled:bg-slate-100 disabled:text-slate-400 text-white font-semibold text-sm transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 border-0 shadow-md shadow-brand-primary/10 disabled:shadow-none"
+        >
+          @if (guardando()) {
+            <i class="pi pi-spin pi-spinner"></i>
+          } @else {
+            <i class="pi pi-check"></i>
+          }
+          <span>{{ editando() ? 'Actualizar' : 'Guardar' }}</span>
+        </button>
+      </div>
+    </form>
+  </p-dialog>
+</div>

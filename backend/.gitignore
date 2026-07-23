@@ -3,6 +3,7 @@ target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+bin/
 
 ### STS ###
 .apt_generated
@@ -19,6 +20,8 @@ target/
 *.iml
 *.ipr
 
+wwwroot/imagenes/
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
@@ -34,4 +37,6 @@ build/
 
 ### application.properties & import.sql ###
 src/main/resources/application.properties
+src/main/resources/application.local.properties
+src/main/resources/application.prod.properties
 src/main/resources/import.sql

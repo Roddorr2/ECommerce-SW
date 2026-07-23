@@ -1,0 +1,181 @@
+<app-header />
+
+<div class="min-h-screen bg-slate-50 flex flex-col">
+  <!-- Hero Section -->
+  <div class="relative bg-slate-900 overflow-hidden py-16 sm:py-24">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(106,90,205,0.15),transparent_50%)]"></div>
+    <div class="absolute -top-40 -right-40 w-80 h-80 bg-brand-primary/10 rounded-full blur-3xl"></div>
+    
+    <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+      <span class="px-3 py-1 text-xs font-bold tracking-wider uppercase bg-brand-primary/20 text-brand-secondary rounded-full border border-brand-primary/30">
+        Asistencia Técnica
+      </span>
+      <h1 class="mt-4 text-4xl font-extrabold text-white tracking-tight sm:text-5xl">
+        Soporte Técnico
+      </h1>
+      <p class="mt-4 text-lg text-slate-300 max-w-2xl mx-auto">
+        ¿Tienes problemas con algún componente, tu cuenta o un pedido en curso? Nuestro equipo técnico especializado está listo para ayudarte.
+      </p>
+    </div>
+  </div>
+
+  <!-- Content Section -->
+  <div class="max-w-6xl mx-auto w-full px-6 py-12 flex-1">
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-12">
+      
+      <!-- Contact channels (Left side - Col 2) -->
+      <div class="lg:col-span-2 space-y-6">
+        <h2 class="text-2xl font-extrabold text-slate-800">Canales de Atención</h2>
+        <p class="text-slate-500 text-sm leading-relaxed">
+          Si prefieres una atención directa, puedes utilizar cualquiera de nuestros canales oficiales. Estamos disponibles para resolver cualquier desperfecto o duda técnica.
+        </p>
+
+        <!-- Channel 1: Email -->
+        <div class="bg-white rounded-2xl border border-slate-100 shadow-premium p-6 flex items-start gap-4">
+          <div class="w-10 h-10 rounded-xl bg-indigo-50 text-brand-primary flex items-center justify-center flex-shrink-0">
+            <i class="pi pi-envelope text-lg"></i>
+          </div>
+          <div>
+            <h4 class="font-bold text-slate-800 text-sm">Correo Electrónico</h4>
+            <p class="text-brand-primary font-semibold text-sm mt-1">technologyfix@gmail.com</p>
+            <p class="text-xs text-slate-400 mt-1">Respuesta garantizada en menos de 24 horas hábiles.</p>
+          </div>
+        </div>
+
+        <!-- Channel 2: WhatsApp -->
+        <div class="bg-white rounded-2xl border border-slate-100 shadow-premium p-6 flex items-start gap-4">
+          <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0">
+            <i class="pi pi-whatsapp text-lg"></i>
+          </div>
+          <div>
+            <h4 class="font-bold text-slate-800 text-sm">WhatsApp Soporte</h4>
+            <p class="text-emerald-600 font-semibold text-sm mt-1">+51 999 999 999</p>
+            <p class="text-xs text-slate-400 mt-1">Horario: L-V 9:00 AM - 6:00 PM | S 9:00 AM - 1:00 PM</p>
+          </div>
+        </div>
+
+        <!-- Channel 3: Presencial -->
+        <div class="bg-white rounded-2xl border border-slate-100 shadow-premium p-6 flex items-start gap-4">
+          <div class="w-10 h-10 rounded-xl bg-orange-50 text-brand-secondary flex items-center justify-center flex-shrink-0">
+            <i class="pi pi-map-marker text-lg"></i>
+          </div>
+          <div>
+            <h4 class="font-bold text-slate-800 text-sm">Servicio Técnico Físico</h4>
+            <p class="text-slate-700 font-semibold text-sm mt-1">Lima, Perú</p>
+            <p class="text-xs text-slate-400 mt-1">Visítanos para diagnósticos de hardware o reclamos de garantía física de partes.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Support Form (Right side - Col 3) -->
+      <div class="lg:col-span-3">
+        <div class="bg-white rounded-3xl border border-slate-100 shadow-premium p-8 sm:p-10">
+          <h3 class="text-xl font-bold text-slate-800 mb-2">Envíanos una solicitud</h3>
+          <p class="text-slate-400 text-xs sm:text-sm mb-6">Completa el formulario y te asignaremos un ticket de atención técnica.</p>
+
+          <form (submit)="enviarFormulario()" class="space-y-6">
+            <!-- Full Name -->
+            <div class="flex flex-col gap-2">
+              <label for="nombre" class="text-xs font-bold uppercase tracking-wider text-slate-500">Nombre Completo</label>
+              <div class="relative">
+                <i class="pi pi-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                <input 
+                  type="text" 
+                  id="nombre"
+                  name="nombre"
+                  [(ngModel)]="formulario.nombre"
+                  placeholder="Ej. Juan Pérez"
+                  class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-brand-primary outline-none transition-all duration-200 text-slate-800 text-sm"
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="flex flex-col gap-2">
+              <label for="email" class="text-xs font-bold uppercase tracking-wider text-slate-500">Correo Electrónico</label>
+              <div class="relative">
+                <i class="pi pi-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                <input 
+                  type="email" 
+                  id="email"
+                  name="email"
+                  [(ngModel)]="formulario.email"
+                  placeholder="nombre@ejemplo.com"
+                  class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-brand-primary outline-none transition-all duration-200 text-slate-800 text-sm"
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- Topic & Case Type -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div class="flex flex-col gap-2">
+                <label for="tipoCaso" class="text-xs font-bold uppercase tracking-wider text-slate-500">Tipo de Solicitud</label>
+                <select 
+                  id="tipoCaso"
+                  name="tipoCaso"
+                  [(ngModel)]="formulario.tipoCaso"
+                  class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-brand-primary outline-none transition-all duration-200 text-slate-800 text-sm cursor-pointer"
+                >
+                  <option value="duda">Duda General</option>
+                  <option value="pedido">Inconveniente con Pedido</option>
+                  <option value="cuenta">Problema con Cuenta / Software</option>
+                  <option value="garantia">Garantía / Falla de Componente</option>
+                </select>
+              </div>
+
+              <div class="flex flex-col gap-2">
+                <label for="asunto" class="text-xs font-bold uppercase tracking-wider text-slate-500">Asunto</label>
+                <div class="relative">
+                  <i class="pi pi-bookmark absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                  <input 
+                    type="text" 
+                    id="asunto"
+                    name="asunto"
+                    [(ngModel)]="formulario.asunto"
+                    placeholder="Ej. Falla en tarjeta de video"
+                    class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-brand-primary outline-none transition-all duration-200 text-slate-800 text-sm"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Message -->
+            <div class="flex flex-col gap-2">
+              <label for="mensaje" class="text-xs font-bold uppercase tracking-wider text-slate-500">Descripción detallada</label>
+              <textarea 
+                id="mensaje"
+                name="mensaje"
+                rows="4"
+                [(ngModel)]="formulario.mensaje"
+                placeholder="Por favor describe detalladamente tu problema técnico, incluyendo números de orden o marcas de componentes si es relevante..."
+                class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:border-brand-primary outline-none transition-all duration-200 text-slate-800 text-sm resize-none"
+                required
+              ></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button
+              type="submit"
+              [disabled]="enviando()"
+              class="w-full py-3.5 rounded-xl bg-brand-primary hover:bg-brand-primary-hover disabled:bg-slate-100 disabled:text-slate-400 text-white font-bold text-sm shadow-md shadow-brand-primary/10 hover:shadow-lg hover:shadow-brand-primary/20 transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 border-0"
+            >
+              @if (enviando()) {
+                <div class="w-4 h-4 border-2 border-slate-300 border-t-white rounded-full animate-spin"></div>
+                <span>Enviando ticket...</span>
+              } @else {
+                <i class="pi pi-send"></i>
+                <span>Enviar Solicitud</span>
+              }
+            </button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<app-footer />

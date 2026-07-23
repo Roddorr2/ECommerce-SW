@@ -1,0 +1,47 @@
+<div class="dashboard-container">
+  <app-header />
+
+  <div class="dashboard-content">
+    <button
+      pButton
+      type="button"
+      icon="pi pi-align-justify"
+      class="p-button-text p-button-rounded menu-toggle"
+      [class.mobile-toggle]="isMobile() || isTablet()"
+      (click)="toggleSidebar()"
+      [title]="sidebarVisible() ? 'Ocultar menú' : 'Mostrar menú'"
+    ></button>
+
+    @if (mostrarOverlay()) {
+      <div class="sidebar-overlay active" (click)="closeSidebar()"></div>
+    }
+
+    <aside
+      class="sidebar"
+      [class.visible]="sidebarVisible()"
+      [class.mobile]="isMobile()"
+      [class.tablet]="isTablet()"
+    >
+      <div class="sidebar-header">
+        <h3>Menú</h3>
+        @if (isMobile() || isTablet()) {
+          <button
+            pButton
+            type="button"
+            icon="pi pi-times"
+            class="p-button-text p-button-rounded close-sidebar"
+            (click)="closeSidebar()"
+            title="Cerrar menú"
+          ></button>
+        }
+      </div>
+      <p-panelMenu [model]="menuItems" [style]="{ width: '100%' }"></p-panelMenu>
+    </aside>
+
+    <main class="content" [class.expanded]="!sidebarVisible()" [class.mobile]="isMobile()">
+      <router-outlet />
+    </main>
+  </div>
+
+  <app-footer />
+</div>

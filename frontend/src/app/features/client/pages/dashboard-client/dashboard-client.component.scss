@@ -1,0 +1,215 @@
+@use '../../../../styles/abstracts/variables' as vars;
+@use 'sass:color';
+
+.client-dashboard-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: vars.$base-color;
+  padding-top: 80px;
+}
+
+.client-dashboard-content {
+  display: flex;
+  flex: 1;
+  position: relative;
+  min-height: calc(100vh - 350px);
+}
+
+.menu-toggle {
+  position: fixed;
+  top: 95px;
+  left: 15px;
+  z-index: 1001;
+  box-shadow: vars.$btn-box-shadow;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.sidebar-overlay {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  width: 100%;
+  height: calc(100vh - 80px);
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 800;
+  backdrop-filter: blur(2px);
+  animation: fadeIn 0.3s ease;
+}
+
+.sidebar {
+  width: 280px;
+  background: vars.$surface-color;
+  border-right: 1px solid vars.$border-color;
+  position: relative;
+  height: 100%;
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+
+  &:not(.visible) {
+    transform: translateX(-100%);
+    position: fixed;
+    top: 80px;
+    height: calc(100vh - 80px);
+    z-index: 900;
+  }
+
+  &.mobile,
+  &.tablet {
+    position: fixed;
+    top: 80px;
+    height: calc(100vh - 80px);
+    z-index: 900;
+  }
+
+  &.mobile {
+    width: 85%;
+    max-width: 320px;
+  }
+
+  &.tablet {
+    width: 280px;
+  }
+
+  .sidebar-header {
+    padding: 1.5rem;
+    background: linear-gradient(
+      135deg,
+      vars.$primary-color 0%,
+      color.scale(vars.$primary-color, $lightness: -15%) 100%
+    );
+    border-radius: 0 0 12px 12px;
+    margin-bottom: 1rem;
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      .user-avatar {
+        font-size: 3rem;
+        color: vars.$surface-color;
+      }
+
+      .user-text {
+        h3 {
+          margin: 0;
+          color: vars.$surface-color;
+          font-size: 1rem;
+          font-weight: 500;
+          opacity: 0.9;
+        }
+
+        p {
+          margin: 0;
+          color: vars.$surface-color;
+          font-size: 1.1rem;
+          font-weight: 600;
+        }
+      }
+    }
+
+    .close-sidebar {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      color: vars.$surface-color !important;
+    }
+  }
+
+  ::ng-deep .p-panelmenu {
+    flex: 1;
+    border: none;
+    background: transparent;
+
+    .p-panelmenu-header-link {
+      padding: 0.875rem 1.5rem;
+      transition: all 0.2s;
+
+      &:hover {
+        background: vars.$surface-hover;
+      }
+    }
+
+    .p-menuitem-link {
+      padding: 0.75rem 1.5rem 0.75rem 3rem;
+    }
+  }
+
+  .sidebar-footer {
+    padding: 1rem;
+    border-top: 1px solid vars.$border-color;
+    margin-top: auto;
+
+    .logout-btn {
+      width: 100%;
+      justify-content: flex-start;
+      color: vars.$error-color !important;
+
+      &:hover {
+        background: rgba(vars.$error-color, 0.1);
+      }
+    }
+  }
+}
+
+.client-content {
+  flex: 1;
+  padding: 2rem;
+  transition: margin-left 0.3s ease;
+  width: 100%;
+
+  &.expanded {
+    margin-left: 0;
+  }
+
+  .welcome-banner {
+    background: linear-gradient(
+      135deg,
+      vars.$primary-color 0%,
+      color.scale(vars.$primary-color, $lightness: -10%) 100%
+    );
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    color: vars.$surface-color;
+
+    h1 {
+      margin: 0 0 0.5rem;
+      font-size: 1.75rem;
+      font-weight: 600;
+    }
+
+    p {
+      margin: 0;
+      opacity: 0.9;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .client-content {
+    padding: 1rem;
+
+    .welcome-banner {
+      padding: 1.5rem;
+
+      h1 {
+        font-size: 1.25rem;
+      }
+    }
+  }
+}

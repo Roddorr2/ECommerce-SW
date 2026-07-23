@@ -6,6 +6,7 @@ import java.util.Date;
 
 import org.springframework.stereotype.Component;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -22,9 +23,10 @@ public class JwtUtil {
         this.jwtExpirationMs = properties.getExpirationMs();
     }
 
-    public String generateToken(String username) {
+    public String generateToken(String username, String rol) {
         return Jwts.builder()
                 .setSubject(username)
+                .claim("authorities", rol)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -45,8 +47,14 @@ public class JwtUtil {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
-            System.out.println("Token inválido: " + e.getMessage());
             return false;
         }
+    }
+    public Claims getAllClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 }

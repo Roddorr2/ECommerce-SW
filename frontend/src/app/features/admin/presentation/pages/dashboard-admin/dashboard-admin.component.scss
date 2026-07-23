@@ -1,0 +1,237 @@
+@use '../../../../../styles/abstracts/variables' as vars;
+@use 'sass:color';
+
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: vars.$base-color;
+  padding-top: 80px;
+}
+
+.dashboard-content {
+  display: flex;
+  flex: 1;
+  position: relative;
+  min-height: calc(100vh - 350px);
+  isolation: isolate;
+}
+
+.menu-toggle {
+  position: fixed;
+  top: 90px;
+  left: 15px;
+  z-index: 1001;
+  box-shadow: vars.$btn-box-shadow;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  }
+
+  &.mobile-toggle {
+    color: vars.$surface-color !important;
+
+    ::ng-deep .p-button-icon {
+      color: vars.$surface-color;
+    }
+  }
+}
+
+.sidebar-overlay {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  width: 100%;
+  height: calc(100vh - 80px);
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 800;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
+  backdrop-filter: blur(2px);
+
+  &.active {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.sidebar {
+  width: 260px;
+  background: vars.$surface-color;
+  border-right: 1px solid vars.$border-color;
+  padding: 0 10px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+  transform: translateX(0);
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: vars.$surface-hover;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: vars.$text-secondary;
+    border-radius: 3px;
+
+    &:hover {
+      background: vars.$text-primary;
+    }
+  }
+
+  .sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: linear-gradient(
+      135deg,
+      vars.$primary-color 0%,
+      color.scale(vars.$primary-color, $lightness: -15%) 100%
+    );
+    border-radius: 5px;
+    margin-bottom: 1rem;
+
+    h3 {
+      margin: 0;
+      color: vars.$surface-color;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .close-sidebar {
+      color: vars.$surface-color !important;
+
+      ::ng-deep .p-button-icon {
+        color: vars.$surface-color;
+      }
+    }
+  }
+
+  ::ng-deep .p-panelmenu {
+    border: none;
+    padding: 0.5rem 0;
+
+    .p-panelmenu-panel {
+      margin-bottom: 0.25rem;
+    }
+
+    .p-panelmenu-header-link {
+      padding: 0.875rem 1.5rem;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: vars.$surface-hover;
+      }
+    }
+
+    .p-panelmenu-content {
+      border: none;
+
+      .p-menuitem-link {
+        padding: 0.75rem 1.5rem 0.75rem 3rem;
+      }
+    }
+  }
+
+  &:not(.visible) {
+    transform: translateX(-100%);
+  }
+
+  &.mobile {
+    width: 85%;
+    max-width: 320px;
+    position: fixed;
+    top: 80px;
+    height: calc(100vh - 80px);
+    z-index: 900;
+  }
+
+  &.tablet {
+    width: 280px;
+    position: fixed;
+    top: 80px;
+    height: calc(100vh - 80px);
+    z-index: 900;
+  }
+}
+
+.content {
+  flex: 1;
+  margin-left: 260px;
+  padding: 2rem;
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;
+  min-height: calc(100vh - 200px);
+
+  &.expanded {
+    margin-left: 0;
+  }
+
+  &.mobile {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .menu-toggle {
+    top: 95px;
+    left: 10px;
+  }
+
+  .content {
+    margin-left: 0 !important;
+    padding: 1.5rem 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-content {
+    min-height: calc(100vh - 250px);
+  }
+
+  .menu-toggle {
+    top: 95px;
+    left: 8px;
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .sidebar .sidebar-header h3 {
+    font-size: 1.1rem;
+  }
+
+  .content {
+    padding: 1rem 0.75rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .menu-toggle {
+    top: 92px;
+    left: 5px;
+  }
+
+  .sidebar.mobile {
+    width: 90%;
+    max-width: 280px;
+  }
+
+  .content {
+    padding: 0.75rem 0.5rem;
+  }
+}

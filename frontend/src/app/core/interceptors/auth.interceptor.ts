@@ -1,23 +1,16 @@
+import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { HttpInterceptorFn, HttpRequest, HttpHandlerFn, HttpEvent } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Auth } from '../services/auth';
+import { AUTH_REPOSITORY } from '../../features/auth/domain/repositories/auth.repository';
 
-export const authInterceptor: HttpInterceptorFn = (
-  req: HttpRequest<any>,
-  next: HttpHandlerFn
-): Observable<HttpEvent<any>> => {
-  const authService = inject(Auth);
-  const token = authService.obtenerToken();
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  const auth = inject(AUTH_REPOSITORY);
+  const token = auth.obtenerToken();
 
-  if (token) {
-    const cloned = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return next(cloned);
-  }
+  if (!token) return next(req);
 
-  return next(req);
+  return next(
+    req.clone({
+      setHeaders: { Authorization: `Bearer ${token}` },
+    }),
+  );
 };

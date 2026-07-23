@@ -1,30 +1,13 @@
-import { Injectable } from '@angular/core';
-import { CanActivate, CanActivateChild, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { Auth } from '../services/auth';
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { AUTH_REPOSITORY } from '../../features/auth/domain/repositories/auth.repository';
 
-@Injectable({ providedIn: 'root' })
-export class AdminGuard implements CanActivate, CanActivateChild {
-  constructor(private auth: Auth, private router: Router) {}
+export const adminGuard: CanActivateFn = () => {
+  const auth = inject(AUTH_REPOSITORY);
+  const router = inject(Router);
 
-  canActivate(): boolean {
-    const rol = this.auth.obtenerRol();
-    console.log('[AdminGuard] rol obtenido:', rol);
+  const rol = auth.obtenerRol()?.toUpperCase();
 
-    const normalized = rol ? rol.toUpperCase() : null;
-    console.log('[AdminGuard] rol normalizado:', normalized);
-
-    if (normalized && ['ADMINISTRADOR', 'ADMIN'].includes(normalized)) {
-      console.log('[AdminGuard] Permitiendo acceso por rol');
-      return true;
-    }
-
-    console.log('[AdminGuard] acceso denegado -> redirigiendo');
-    this.router.navigate(['/login']);
-    return false;
-  }
-
-  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    console.log('[AdminGuard] canActivateChild -> url solicitada:', state.url);
-    return this.canActivate();
-  }
-}
+  return (rol === 'ADMINISTRADOR' || rol === 'EMPLEADO')
+    || router.createUrlTree(['/auth/login']);
+};

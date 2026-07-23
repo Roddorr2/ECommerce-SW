@@ -1,31 +1,10 @@
-import { Injectable } from '@angular/core';
-import { CanActivate, CanActivateChild, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { Auth } from '../services/auth';
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { AUTH_REPOSITORY } from '../../features/auth/domain/repositories/auth.repository';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class AuthGuard implements CanActivate, CanActivateChild {
+export const authGuard: CanActivateFn = () => {
+  const auth = inject(AUTH_REPOSITORY);
+  const router = inject(Router);
 
-  constructor(private auth: Auth, private router: Router) {}
-
-  canActivate(): boolean {
-    const token = this.auth.obtenerToken();
-    console.log('[AuthGuard] Token detectado:', token);
-
-    if (token) {
-      console.log('[AuthGuard] Permitiendo acceso');
-      return true;
-    }
-
-    console.warn('[AuthGuard] Token ausente → redirigiendo a login');
-    this.router.navigate(['/login']);
-    return false;
-  }
-
-  // Delegamos canActivateChild a canActivate para que funcione si se usa canActivateChild en rutas
-  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    console.log('[AuthGuard] canActivateChild -> url solicitada:', state.url);
-    return this.canActivate();
-  }
-}
+  return auth.estaAutenticado() || router.createUrlTree(['/auth/login']);
+};

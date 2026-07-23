@@ -1,0 +1,213 @@
+@use '../../../../../styles/abstracts/variables' as vars;
+@use 'sass:color';
+
+.empleados-container {
+  padding: 2rem;
+  background: vars.$surface-color;
+  border-radius: vars.$border-radius-lg;
+  min-height: 70vh;
+  box-shadow: vars.$shadow-sm;
+
+  .header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid vars.$border-color;
+
+    h2 {
+      margin: 0;
+      font-weight: 600;
+      color: vars.$text-primary;
+      font-size: 1.75rem;
+    }
+  }
+
+  .field {
+    margin-bottom: 1rem;
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: vars.$text-secondary;
+
+      .text-red-500 {
+        color: vars.$error-color;
+      }
+    }
+
+    ::ng-deep {
+      .p-select {
+        width: 100%;
+
+        .p-select-label {
+          padding: 0.75rem;
+        }
+      }
+
+      .p-inputtext {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid vars.$input-border;
+        border-radius: vars.$border-radius-sm;
+        font-size: 1rem;
+        transition: border-color 0.2s, box-shadow 0.2s;
+
+        &:focus {
+          outline: none;
+          border-color: vars.$primary-color;
+          box-shadow: vars.$focus-ring;
+        }
+
+        &.ng-invalid.ng-touched {
+          border-color: vars.$error-color;
+        }
+      }
+    }
+
+    .p-error {
+      display: block;
+      color: vars.$error-color;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-start;
+  }
+
+  .dialog-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid vars.$border-color;
+  }
+
+  ::ng-deep {
+    .p-datatable {
+      border-radius: vars.$border-radius-md;
+      overflow: hidden;
+
+      .p-datatable-thead > tr > th {
+        background: vars.$base-color;
+        color: vars.$text-secondary;
+        font-weight: 600;
+        padding: 1rem;
+        border-bottom: 2px solid vars.$border-color;
+      }
+
+      .p-datatable-tbody > tr {
+        transition: all 0.2s ease;
+
+        &:hover {
+          background: vars.$surface-hover;
+        }
+
+        > td {
+          padding: 0.75rem 1rem;
+          border-bottom: 1px solid vars.$border-color;
+          color: vars.$text-primary;
+        }
+      }
+
+      .p-paginator {
+        background: transparent;
+        border: none;
+        padding: 1rem 0 0;
+      }
+    }
+
+    .p-dialog {
+      .p-dialog-header {
+        background: vars.$primary-color;
+        color: vars.$surface-color;
+        border-radius: vars.$border-radius-md vars.$border-radius-md 0 0;
+        padding: 1.25rem;
+      }
+
+      .p-dialog-content {
+        padding: 2rem;
+      }
+    }
+
+    .p-button {
+      border-radius: vars.$btn-border-radius;
+      box-shadow: vars.$btn-box-shadow;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: vars.$btn-hover-bg;
+      }
+    }
+
+    .p-button-success {
+      background: vars.$primary-color;
+      border-color: vars.$primary-color;
+
+      &:hover {
+        background: color.scale(vars.$primary-color, $lightness: -15%);
+      }
+    }
+
+    .p-button-warning {
+      background: vars.$secondary-color;
+      border-color: vars.$secondary-color;
+
+      &:hover {
+        background: color.scale(vars.$secondary-color, $lightness: -15%);
+      }
+    }
+
+    .p-button-sm {
+      padding: 0.4rem 0.6rem;
+      font-size: 0.875rem;
+    }
+
+    .p-button-text {
+      box-shadow: none;
+    }
+  }
+
+  .badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.875rem;
+    font-weight: 600;
+
+    &.bg-success {
+      color: white;
+      background-color: vars.$success-color;
+    }
+
+    &.bg-danger {
+      background-color: vars.$error-color;
+      color: white;
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+
+    .header-section {
+      flex-direction: column;
+      gap: 1rem;
+      align-items: stretch;
+
+      button {
+        width: 100%;
+      }
+    }
+
+    ::ng-deep .p-dialog {
+      width: 95% !important;
+      max-width: 550px;
+    }
+  }
+}

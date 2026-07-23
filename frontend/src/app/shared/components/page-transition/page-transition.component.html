@@ -1,0 +1,28 @@
+@if (cargando()) {
+  <div class="page-transition">
+    <div class="transition-overlay" [class.fade-out]="progreso() === 100">
+      @if (mostrarSpinner()) {
+        <div class="loader">
+          <div class="spinner"></div>
+          <p class="loading-message">{{ mensaje() }}</p>
+        </div>
+      }
+
+      @if (mostrarBarraProgreso()) {
+        <div class="progress-container">
+          <div class="progress-bar-container">
+            <div
+              class="progress-bar"
+              [style.width]="anchoProgreso()"
+              [class.completed]="progreso() === 100"
+            ></div>
+          </div>
+          <div class="progress-info">
+            <span class="progress-percentage">{{ progreso() }}%</span>
+            <span class="progress-message">{{ mensaje() }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+}

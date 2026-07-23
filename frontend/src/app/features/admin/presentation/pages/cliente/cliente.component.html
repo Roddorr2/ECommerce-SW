@@ -1,0 +1,154 @@
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+
+<div class="max-w-7xl mx-auto px-6 py-6 md:px-12 flex-1 w-full">
+  <!-- Header Section -->
+  <div class="mb-8 border-b border-slate-100 pb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div>
+      <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Gestión de Clientes</h2>
+      <p class="mt-1.5 text-sm text-slate-500">Visualiza y actualiza la información de los clientes registrados.</p>
+    </div>
+    <div class="flex items-center gap-3 self-start sm:self-center">
+      <input
+        type="text"
+        pInputText
+        placeholder="Buscar clientes..."
+        (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+        class="rounded-xl border-slate-200 text-sm h-10 w-48 sm:w-64"
+      />
+    </div>
+  </div>
+
+  <!-- Table Section -->
+  <div class="bg-white rounded-2xl border border-slate-100 shadow-premium overflow-hidden">
+    <p-table
+      #dt
+      [value]="clientes()"
+      [paginator]="true"
+      [rows]="8"
+      [rowsPerPageOptions]="[5, 8, 15]"
+      [rowHover]="true"
+      styleClass="p-datatable-sm"
+      [loading]="cargando()"
+      [globalFilterFields]="['usuario', 'correo', 'telefono', 'direccion']"
+    >
+      <ng-template pTemplate="header">
+        <tr class="bg-slate-50/75 border-b border-slate-100 text-xs font-bold text-slate-500 uppercase tracking-wider">
+          <th pSortableColumn="id" class="py-4 px-6">ID <p-sortIcon field="id"></p-sortIcon></th>
+          <th pSortableColumn="usuario" class="py-4 px-6">Cliente <p-sortIcon field="usuario"></p-sortIcon></th>
+          <th pSortableColumn="correo" class="py-4 px-6">Email <p-sortIcon field="correo"></p-sortIcon></th>
+          <th pSortableColumn="telefono" class="py-4 px-6">Teléfono <p-sortIcon field="telefono"></p-sortIcon></th>
+          <th pSortableColumn="direccion" class="py-4 px-6">Dirección <p-sortIcon field="direccion"></p-sortIcon></th>
+          <th class="py-4 px-6 text-center" style="width: 8rem">Acciones</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-c>
+        <tr class="hover:bg-slate-50/50 transition-colors text-sm">
+          <td class="py-4 px-6 font-bold text-slate-700">#{{ c.id }}</td>
+          <td class="py-4 px-6 font-semibold text-slate-800">
+            <i class="pi pi-user text-slate-400 mr-2"></i>
+            {{ c.usuario }}
+          </td>
+          <td class="py-4 px-6 text-slate-500 font-mono">{{ c.correo }}</td>
+          <td class="py-4 px-6 text-slate-600">{{ c.telefono || '—' }}</td>
+          <td class="py-4 px-6 text-slate-600">{{ c.direccion || '—' }}</td>
+          <td class="py-4 px-6">
+            <div class="flex items-center justify-center gap-2">
+              <button
+                (click)="editar(c)"
+                class="w-8 h-8 rounded-lg bg-amber-50 hover:bg-amber-500 text-amber-600 hover:text-white flex items-center justify-center transition-all duration-200 cursor-pointer border-0"
+                title="Editar cliente"
+              >
+                <i class="pi pi-pencil text-xs"></i>
+              </button>
+              <button
+                (click)="confirmarEliminar(c)"
+                class="w-8 h-8 rounded-lg bg-red-50 hover:bg-red-500 text-red-500 hover:text-white flex items-center justify-center transition-all duration-200 cursor-pointer border-0"
+                title="Eliminar cliente"
+              >
+                <i class="pi pi-trash text-xs"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="6" class="text-center py-8 text-slate-400 font-medium">No hay clientes registrados.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <!-- Dialog Form -->
+  <p-dialog
+    [visible]="mostrarDialog()"
+    (visibleChange)="mostrarDialog.set($event)"
+    header="Editar Cliente"
+    [modal]="true"
+    [draggable]="false"
+    [resizable]="false"
+    [style]="{ width: '450px' }"
+    styleClass="rounded-2xl overflow-hidden shadow-2xl border border-slate-100"
+    (onHide)="cancelar()"
+  >
+    <form [formGroup]="form" (ngSubmit)="guardar()" class="space-y-6 pt-2">
+      <!-- Teléfono -->
+      <div class="flex flex-col gap-1.5">
+        <label for="telefono" class="text-xs font-bold uppercase tracking-wider text-slate-500">Teléfono</label>
+        <input
+          id="telefono"
+          type="text"
+          pInputText
+          formControlName="telefono"
+          placeholder="Ej. 987654321"
+          class="w-full rounded-xl border-slate-200 text-sm h-10"
+          [class.border-red-500]="form.get('telefono')?.invalid && form.get('telefono')?.touched"
+        />
+        @if (form.get('telefono')?.invalid && form.get('telefono')?.touched) {
+          <small class="text-red-500 text-xs font-medium">Ingrese un teléfono válido.</small>
+        }
+      </div>
+
+      <!-- Dirección -->
+      <div class="flex flex-col gap-1.5">
+        <label for="direccion" class="text-xs font-bold uppercase tracking-wider text-slate-500">Dirección</label>
+        <input
+          id="direccion"
+          type="text"
+          pInputText
+          formControlName="direccion"
+          placeholder="Ej. Av. Larco 123, Miraflores"
+          class="w-full rounded-xl border-slate-200 text-sm h-10"
+          [class.border-red-500]="form.get('direccion')?.invalid && form.get('direccion')?.touched"
+        />
+        @if (form.get('direccion')?.invalid && form.get('direccion')?.touched) {
+          <small class="text-red-500 text-xs font-medium">La dirección es obligatoria.</small>
+        }
+      </div>
+
+      <div class="flex justify-end gap-3 mt-8 border-t border-slate-100 pt-5">
+        <button
+          (click)="cancelar()"
+          type="button"
+          class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-sm transition-all duration-200 cursor-pointer bg-transparent border-slate-200"
+        >
+          <i class="pi pi-times"></i>
+          <span>Cancelar</span>
+        </button>
+        <button
+          type="submit"
+          [disabled]="form.invalid || guardando()"
+          class="px-5 py-2.5 rounded-xl bg-brand-primary hover:bg-brand-primary-hover disabled:bg-slate-100 disabled:text-slate-400 text-white font-semibold text-sm transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 border-0 shadow-md shadow-brand-primary/10 disabled:shadow-none"
+        >
+          @if (guardando()) {
+            <i class="pi pi-spin pi-spinner"></i>
+          } @else {
+            <i class="pi pi-check"></i>
+          }
+          <span>Actualizar</span>
+        </button>
+      </div>
+    </form>
+  </p-dialog>
+</div>

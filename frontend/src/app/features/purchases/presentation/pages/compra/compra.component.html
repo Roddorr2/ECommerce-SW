@@ -1,0 +1,323 @@
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+
+<div class="max-w-7xl mx-auto px-6 py-6 md:px-12 flex-1 w-full">
+  <!-- Header Section -->
+  <div class="mb-8 border-b border-slate-100 pb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div>
+      <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Gestión de Compras</h2>
+      <p class="mt-1.5 text-sm text-slate-500">Registra y haz seguimiento a las órdenes de compra con tus proveedores.</p>
+    </div>
+    <div class="flex items-center gap-3 self-start sm:self-center">
+      <input
+        type="text"
+        pInputText
+        placeholder="Buscar compras..."
+        (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+        class="rounded-xl border-slate-200 text-sm h-10 w-48 sm:w-64"
+      />
+      <button
+        (click)="mostrarDialogo()"
+        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-primary hover:bg-brand-primary-hover text-white font-semibold text-sm transition-all duration-200 cursor-pointer border-0 shadow-md shadow-brand-primary/10"
+      >
+        <i class="pi pi-plus"></i>
+        <span>Nueva Compra</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Table Section -->
+  <div class="bg-white rounded-2xl border border-slate-100 shadow-premium overflow-hidden">
+    <p-table
+      #dt
+      [value]="compras()"
+      [paginator]="true"
+      [rows]="8"
+      [rowsPerPageOptions]="[5, 8, 15]"
+      [rowHover]="true"
+      styleClass="p-datatable-sm"
+      [loading]="cargando()"
+      [globalFilterFields]="['id', 'fechaCompra', 'estado', 'proveedor.nombre', 'empleado.nombreUsuario', 'total']"
+    >
+      <ng-template pTemplate="header">
+        <tr class="bg-slate-50/75 border-b border-slate-100 text-xs font-bold text-slate-500 uppercase tracking-wider">
+          <th pSortableColumn="id" class="py-4 px-6">ID <p-sortIcon field="id"></p-sortIcon></th>
+          <th pSortableColumn="fechaCompra" class="py-4 px-6">Fecha <p-sortIcon field="fechaCompra"></p-sortIcon></th>
+          <th pSortableColumn="estado" class="py-4 px-6 text-center">Estado <p-sortIcon field="estado"></p-sortIcon></th>
+          <th class="py-4 px-6">Proveedor</th>
+          <th class="py-4 px-6">Empleado</th>
+          <th pSortableColumn="total" class="py-4 px-6 text-right">Total <p-sortIcon field="total"></p-sortIcon></th>
+          <th class="py-4 px-6 text-center">Acciones</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-compra>
+        <tr class="hover:bg-slate-50/50 transition-colors text-sm">
+          <td class="py-4 px-6 font-bold text-slate-700">#{{ compra.id }}</td>
+          <td class="py-4 px-6 text-slate-600">{{ compra.fechaCompra | date: 'dd/MM/yyyy' }}</td>
+          <td class="py-4 px-6 text-center">
+            <span [class]="getBadgeClass(compra.estado)">
+              {{ compra.estado }}
+            </span>
+          </td>
+          <td class="py-4 px-6 font-semibold text-slate-800">{{ compra.proveedor.nombre }}</td>
+          <td class="py-4 px-6 text-slate-600">{{ compra.empleado.nombreUsuario }}</td>
+          <td class="py-4 px-6 text-right font-bold text-slate-800">{{ compra.total | currency: 'PEN' : 'symbol' : '1.2-2' }}</td>
+          <td class="py-4 px-6">
+            <div class="flex items-center justify-center gap-2">
+              <button
+                (click)="verDetalle(compra.id)"
+                class="w-8 h-8 rounded-lg bg-indigo-50 hover:bg-brand-primary text-brand-primary hover:text-white flex items-center justify-center transition-all duration-200 cursor-pointer border-0"
+                title="Ver detalle"
+              >
+                <i class="pi pi-eye text-xs"></i>
+              </button>
+              @if (compra.estado === EstadoCompra.PENDIENTE) {
+                <button
+                  (click)="recibirCompra(compra.id)"
+                  class="w-8 h-8 rounded-lg bg-emerald-50 hover:bg-emerald-500 text-emerald-600 hover:text-white flex items-center justify-center transition-all duration-200 cursor-pointer border-0"
+                  title="Recibir compra"
+                >
+                  <i class="pi pi-check text-xs"></i>
+                </button>
+                <button
+                  (click)="cancelarCompra(compra.id)"
+                  class="w-8 h-8 rounded-lg bg-amber-50 hover:bg-amber-500 text-amber-600 hover:text-white flex items-center justify-center transition-all duration-200 cursor-pointer border-0"
+                  title="Cancelar compra"
+                >
+                  <i class="pi pi-times text-xs"></i>
+                </button>
+                <button
+                  (click)="confirmarEliminar(compra.id)"
+                  class="w-8 h-8 rounded-lg bg-red-50 hover:bg-red-500 text-red-500 hover:text-white flex items-center justify-center transition-all duration-200 cursor-pointer border-0"
+                  title="Eliminar compra"
+                >
+                  <i class="pi pi-trash text-xs"></i>
+                </button>
+              }
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="7" class="text-center py-8 text-slate-400 font-medium">No hay compras registradas.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <!-- Form Dialog (Modal) -->
+  <p-dialog
+    [visible]="mostrarFormulario()"
+    (visibleChange)="mostrarFormulario.set($event)"
+    header="Registrar Nueva Compra"
+    [modal]="true"
+    [draggable]="false"
+    [resizable]="false"
+    [style]="{ width: '750px' }"
+    styleClass="rounded-2xl overflow-hidden shadow-2xl border border-slate-100"
+    (onHide)="cancelar()"
+  >
+    <form [formGroup]="form" (ngSubmit)="guardar()" class="space-y-6 pt-2">
+      <div class="grid grid-cols-12 gap-5">
+        <!-- Proveedor -->
+        <div class="col-span-12 sm:col-span-6 flex flex-col gap-1.5">
+          <label for="proveedorId" class="text-xs font-bold uppercase tracking-wider text-slate-500">Proveedor <span class="text-red-500">*</span></label>
+          <p-select
+            id="proveedorId"
+            formControlName="proveedorId"
+            [options]="proveedores()"
+            optionLabel="nombre"
+            optionValue="id"
+            placeholder="Seleccione un proveedor"
+            styleClass="w-full rounded-xl border-slate-200 text-sm h-10 flex items-center"
+            [class.border-red-500]="form.get('proveedorId')?.invalid && form.get('proveedorId')?.touched"
+          ></p-select>
+          @if (form.get('proveedorId')?.invalid && form.get('proveedorId')?.touched) {
+            <small class="text-red-500 text-xs font-medium">El proveedor es obligatorio.</small>
+          }
+        </div>
+
+        <!-- Empleado Select -->
+        <div class="col-span-12 sm:col-span-6 flex flex-col gap-1.5">
+          <label for="empleadoId" class="text-xs font-bold uppercase tracking-wider text-slate-500">Empleado Responsable <span class="text-red-500">*</span></label>
+          <p-select
+            id="empleadoId"
+            formControlName="empleadoId"
+            [options]="empleados()"
+            optionLabel="nombreUsuario"
+            optionValue="id"
+            placeholder="Seleccione un empleado"
+            styleClass="w-full rounded-xl border-slate-200 text-sm h-10 flex items-center"
+            [class.border-red-500]="form.get('empleadoId')?.invalid && form.get('empleadoId')?.touched"
+          ></p-select>
+          @if (form.get('empleadoId')?.invalid && form.get('empleadoId')?.touched) {
+            <small class="text-red-500 text-xs font-medium">El empleado es obligatorio.</small>
+          }
+        </div>
+      </div>
+
+      <!-- Products List Section -->
+      <div class="border-t border-slate-100 pt-6">
+        <div class="flex items-center justify-between mb-4">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500">Productos de la Compra</h4>
+          <button
+            type="button"
+            (click)="agregarItem()"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-indigo-200 hover:bg-indigo-50/50 text-brand-primary text-xs font-semibold transition-colors cursor-pointer bg-transparent"
+          >
+            <i class="pi pi-plus text-[10px]"></i>
+            <span>Agregar producto</span>
+          </button>
+        </div>
+
+        <div class="space-y-4 max-h-[250px] overflow-y-auto pr-1" formArrayName="items">
+          @for (item of items.controls; track $index) {
+            <div [formGroupName]="$index" class="grid grid-cols-1 sm:grid-cols-12 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-100 items-end relative">
+              <!-- Producto Select -->
+              <div class="sm:col-span-5 flex flex-col gap-1">
+                <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Producto <span class="text-red-500">*</span></label>
+                <p-select
+                  formControlName="productoId"
+                  [options]="productos()"
+                  optionLabel="nombre"
+                  optionValue="id"
+                  placeholder="Seleccione producto"
+                  styleClass="w-full rounded-lg border-slate-200 text-xs h-9 flex items-center bg-white"
+                ></p-select>
+              </div>
+
+              <!-- Cantidad -->
+              <div class="sm:col-span-3 flex flex-col gap-1">
+                <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Cantidad <span class="text-red-500">*</span></label>
+                <input
+                  type="number"
+                  pInputText
+                  formControlName="cantidad"
+                  placeholder="1"
+                  min="1"
+                  class="w-full rounded-lg border-slate-200 text-xs h-9 bg-white"
+                />
+              </div>
+
+              <!-- Precio Unitario -->
+              <div class="sm:col-span-3 flex flex-col gap-1">
+                <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400">P. Unitario (S/) <span class="text-red-500">*</span></label>
+                <input
+                  type="number"
+                  pInputText
+                  formControlName="precioUnitario"
+                  placeholder="0.00"
+                  step="0.01"
+                  class="w-full rounded-lg border-slate-200 text-xs h-9 bg-white"
+                />
+              </div>
+
+              <!-- Delete button -->
+              <div class="sm:col-span-1 flex justify-center pb-0.5">
+                @if (items.length > 1) {
+                  <button
+                    type="button"
+                    (click)="eliminarItem($index)"
+                    class="w-8 h-8 rounded-lg bg-red-50 hover:bg-red-500 text-red-500 hover:text-white flex items-center justify-center transition-all duration-200 cursor-pointer border-0"
+                    title="Eliminar ítem"
+                  >
+                    <i class="pi pi-trash text-xs"></i>
+                  </button>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="flex justify-end gap-3 mt-8 border-t border-slate-100 pt-5">
+        <button
+          (click)="cancelar()"
+          type="button"
+          class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-sm transition-all duration-200 cursor-pointer bg-transparent border-slate-200"
+        >
+          <i class="pi pi-times"></i>
+          <span>Cancelar</span>
+        </button>
+        <button
+          type="submit"
+          [disabled]="form.invalid || guardando()"
+          class="px-5 py-2.5 rounded-xl bg-brand-primary hover:bg-brand-primary-hover disabled:bg-slate-100 disabled:text-slate-400 text-white font-semibold text-sm transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 border-0 shadow-md shadow-brand-primary/10 disabled:shadow-none"
+        >
+          @if (guardando()) {
+            <i class="pi pi-spin pi-spinner"></i>
+          } @else {
+            <i class="pi pi-check"></i>
+          }
+          <span>Registrar Compra</span>
+        </button>
+      </div>
+    </form>
+  </p-dialog>
+
+  <!-- Detail Dialog -->
+  <p-dialog
+    [visible]="mostrarDetalle()"
+    (visibleChange)="mostrarDetalle.set($event)"
+    header="Detalle de Compra"
+    [modal]="true"
+    [draggable]="false"
+    [resizable]="false"
+    [style]="{ width: '700px' }"
+    styleClass="rounded-2xl overflow-hidden shadow-2xl border border-slate-100"
+  >
+    @if (compraSeleccionada()) {
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50 p-5 rounded-2xl border border-slate-100 mb-6 text-sm">
+        <p class="text-slate-600"><strong>Proveedor:</strong> <span class="text-slate-800 font-semibold ml-1">{{ compraSeleccionada()!.proveedor.nombre }}</span></p>
+        <p class="text-slate-600"><strong>Empleado:</strong> <span class="text-slate-800 font-medium ml-1">{{ compraSeleccionada()!.empleado.nombreUsuario }}</span></p>
+        <p class="text-slate-600">
+          <strong>Fecha:</strong> <span class="text-slate-800 ml-1">{{ compraSeleccionada()!.fechaCompra | date: 'dd/MM/yyyy' }}</span>
+        </p>
+        <p class="text-slate-600">
+          <strong>Estado:</strong> 
+          <span [class]="getBadgeClass(compraSeleccionada()!.estado.nombre) + ' ml-1'">
+            {{ compraSeleccionada()!.estado.nombre }}
+          </span>
+        </p>
+        <p class="text-slate-600 sm:col-span-2">
+          <strong>Total:</strong>
+          <span class="text-brand-primary font-bold text-base ml-1">{{ compraSeleccionada()!.total | currency: 'PEN' : 'symbol' : '1.2-2' }}</span>
+        </p>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-100 shadow-premium overflow-hidden">
+        <p-table [value]="compraSeleccionada()!.detalles" styleClass="p-datatable-sm">
+          <ng-template pTemplate="header">
+            <tr class="bg-slate-50/75 border-b border-slate-100 text-xs font-bold text-slate-500 uppercase tracking-wider">
+              <th class="py-3 px-4">Producto</th>
+              <th class="py-3 px-4">SKU</th>
+              <th class="py-3 px-4 text-center">Cantidad</th>
+              <th class="py-3 px-4 text-right">Precio unit.</th>
+              <th class="py-3 px-4 text-right">Subtotal</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-d>
+            <tr class="hover:bg-slate-50/25 transition-colors text-xs">
+              <td class="py-3 px-4 font-semibold text-slate-800">{{ d.producto.nombre }}</td>
+              <td class="py-3 px-4 text-slate-500 font-mono">{{ d.producto.sku }}</td>
+              <td class="py-3 px-4 text-center text-slate-700 font-medium">{{ d.cantidad }}</td>
+              <td class="py-3 px-4 text-right text-slate-600">{{ d.precioUnitario | currency: 'PEN' : 'symbol' : '1.2-2' }}</td>
+              <td class="py-3 px-4 text-right font-bold text-slate-800">{{ d.subtotal | currency: 'PEN' : 'symbol' : '1.2-2' }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    }
+    <ng-template pTemplate="footer">
+      <button
+        (click)="mostrarDetalle.set(false)"
+        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-sm transition-all duration-200 cursor-pointer bg-transparent border-slate-200"
+      >
+        <i class="pi pi-times"></i>
+        <span>Cerrar</span>
+      </button>
+    </ng-template>
+  </p-dialog>
+</div>

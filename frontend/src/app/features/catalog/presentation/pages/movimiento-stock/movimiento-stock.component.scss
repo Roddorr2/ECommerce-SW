@@ -1,0 +1,25 @@
+@use '../../../../../styles/abstracts/variables' as vars;
+
+.movimientos-container {
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 12px;
+  min-height: 70vh;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+
+  ::ng-deep .p-datatable-thead > tr > th {
+    background: vars.$primary-color;
+    color: white;
+    font-weight: 600;
+    padding: 1rem;
+  }
+
+  .text-success {
+    color: #22c55e;
+    font-weight: 600;
+  }
+  .text-danger {
+    color: #ef4444;
+    font-weight: 600;
+  }
+}

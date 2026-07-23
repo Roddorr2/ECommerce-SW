@@ -1,0 +1,5 @@
+{
+    "java.project.sourcePaths": [
+        "frontend/src/app/features/admin/ordenes/interfaces"
+    ]
+}

@@ -1,0 +1,162 @@
+<app-header />
+
+<div class="min-h-screen bg-slate-50 flex flex-col">
+  <!-- Hero Section -->
+  <div class="relative bg-slate-900 overflow-hidden py-16 sm:py-24">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(106,90,205,0.15),transparent_50%)]"></div>
+    <div class="absolute -top-40 -right-40 w-80 h-80 bg-brand-primary/10 rounded-full blur-3xl"></div>
+    
+    <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+      <span class="px-3 py-1 text-xs font-bold tracking-wider uppercase bg-brand-primary/20 text-brand-secondary rounded-full border border-brand-primary/30">
+        Transacciones Seguras
+      </span>
+      <h1 class="mt-4 text-4xl font-extrabold text-white tracking-tight sm:text-5xl">
+        Métodos de Pago
+      </h1>
+      <p class="mt-4 text-lg text-slate-300 max-w-2xl mx-auto">
+        Elige la opción que más te acomode. Todas nuestras transacciones están protegidas con sistemas de encriptación de nivel bancario.
+      </p>
+    </div>
+  </div>
+
+  <!-- Content Section -->
+  <div class="max-w-6xl mx-auto w-full px-6 py-12 flex-1">
+    <!-- Grid of payment options -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+      
+      <!-- Option 1: Cards -->
+      <div class="bg-white rounded-3xl border border-slate-100 shadow-premium p-8 hover:-translate-y-1 transition-all duration-300 flex flex-col">
+        <div class="flex items-center gap-4 mb-6">
+          <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-brand-primary flex items-center justify-center">
+            <i class="pi pi-credit-card text-2xl"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-slate-800">Tarjetas de Crédito y Débito</h3>
+            <span class="text-xs text-brand-primary font-semibold">Procesamiento instantáneo</span>
+          </div>
+        </div>
+        
+        <p class="text-slate-500 text-sm leading-relaxed flex-1">
+          Aceptamos todas las tarjetas de crédito y débito nacionales e internacionales. Los pagos se procesan de forma inmediata en nuestra pasarela segura de alta tecnología.
+        </p>
+
+        <!-- Brand logos placeholder style -->
+        <div class="flex items-center gap-3 mt-6 pt-6 border-t border-slate-100">
+          <div class="px-3 py-1.5 rounded-lg border border-slate-100 bg-slate-50 text-xs font-bold text-slate-500">VISA</div>
+          <div class="px-3 py-1.5 rounded-lg border border-slate-100 bg-slate-50 text-xs font-bold text-slate-500">MASTERCARD</div>
+          <div class="px-3 py-1.5 rounded-lg border border-slate-100 bg-slate-50 text-xs font-bold text-slate-500">AMEX</div>
+          <div class="px-3 py-1.5 rounded-lg border border-slate-100 bg-slate-50 text-xs font-bold text-slate-500">DINERS</div>
+        </div>
+      </div>
+
+      <!-- Option 2: Digital Wallets -->
+      <div class="bg-white rounded-3xl border border-slate-100 shadow-premium p-8 hover:-translate-y-1 transition-all duration-300 flex flex-col">
+        <div class="flex items-center gap-4 mb-6">
+          <div class="w-12 h-12 rounded-2xl bg-orange-50 text-brand-secondary flex items-center justify-center">
+            <i class="pi pi-mobile text-2xl"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-slate-800">Billeteras Digitales</h3>
+            <span class="text-xs text-brand-secondary font-semibold">Cero comisiones</span>
+          </div>
+        </div>
+        
+        <p class="text-slate-500 text-sm leading-relaxed flex-1">
+          Paga de manera rápida escaneando nuestro código QR dinámico desde tu celular al finalizar el pedido. Aceptamos Yape y Plin para compras de hasta S/ 2,000 diarios.
+        </p>
+
+        <div class="flex items-center gap-3 mt-6 pt-6 border-t border-slate-100">
+          <div class="px-4 py-1.5 rounded-lg bg-cyan-50 border border-cyan-100 text-xs font-bold text-cyan-600">YAPE</div>
+          <div class="px-4 py-1.5 rounded-lg bg-indigo-50 border border-indigo-100 text-xs font-bold text-indigo-600">PLIN</div>
+        </div>
+      </div>
+
+      <!-- Option 3: Bank Transfer -->
+      <div class="bg-white rounded-3xl border border-slate-100 shadow-premium p-8 hover:-translate-y-1 transition-all duration-300 flex flex-col">
+        <div class="flex items-center gap-4 mb-6">
+          <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+            <i class="pi pi-building text-2xl"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-slate-800">Transferencia Bancaria</h3>
+            <span class="text-xs text-emerald-600 font-semibold">Confirmación en 1-2 horas</span>
+          </div>
+        </div>
+        
+        <p class="text-slate-500 text-sm leading-relaxed flex-1">
+          Puedes transferir directamente a nuestras cuentas corrientes o interbancarias desde tu banca móvil. Tras hacer la transferencia, deberás enviar tu constancia al correo de soporte.
+        </p>
+
+        <div class="mt-6 pt-6 border-t border-slate-100 space-y-2">
+          <div class="flex justify-between text-xs text-slate-500">
+            <span>BCP Cta. Corriente Soles:</span>
+            <span class="font-bold text-slate-700">191-99887766-0-12</span>
+          </div>
+          <div class="flex justify-between text-xs text-slate-500">
+            <span>BBVA Cta. Corriente Soles:</span>
+            <span class="font-bold text-slate-700">0011-0123-0100045678</span>
+          </div>
+          <div class="flex justify-between text-xs text-slate-500">
+            <span>CCI (Interbancario BCP):</span>
+            <span class="font-bold text-slate-700">002-191009988776601254</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option 4: PagoEfectivo -->
+      <div class="bg-white rounded-3xl border border-slate-100 shadow-premium p-8 hover:-translate-y-1 transition-all duration-300 flex flex-col">
+        <div class="flex items-center gap-4 mb-6">
+          <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center">
+            <i class="pi pi-wallet text-2xl"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-slate-800">PagoEfectivo</h3>
+            <span class="text-xs text-purple-600 font-semibold">Pago en agentes o banca móvil</span>
+          </div>
+        </div>
+        
+        <p class="text-slate-500 text-sm leading-relaxed flex-1">
+          Genera un código CIP al finalizar tu compra y págalo a través de tu banca por internet, o acércate a cualquier bodega, farmacia o agente autorizado a nivel nacional para pagar en efectivo.
+        </p>
+
+        <div class="flex items-center gap-3 mt-6 pt-6 border-t border-slate-100">
+          <div class="px-3 py-1.5 rounded-lg border border-yellow-200 bg-yellow-50 text-xs font-bold text-yellow-700">PAGO EFECTIVO</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Security details -->
+    <div class="bg-slate-900 rounded-3xl p-8 sm:p-12 text-white relative overflow-hidden shadow-premium">
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(106,90,205,0.15),transparent_70%)]"></div>
+      <div class="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+        <div class="lg:col-span-2">
+          <h2 class="text-2xl font-extrabold flex items-center gap-3">
+            <i class="pi pi-verified text-brand-secondary text-3xl"></i>
+            Seguridad Garantizada al 100%
+          </h2>
+          <p class="text-slate-300 mt-4 text-sm sm:text-base leading-relaxed">
+            En Technology Fix nos tomamos muy en serio la seguridad de tu información. Todas las transacciones se realizan bajo los protocolos SSL (Secure Sockets Layer) y cumplen con los más rigurosos estándares de la industria PCI-DSS para asegurar la privacidad de tus datos financieros.
+          </p>
+        </div>
+        <div class="flex flex-col sm:flex-row lg:flex-col gap-4 justify-center">
+          <div class="flex items-center gap-4 bg-slate-800/50 border border-slate-800 p-4 rounded-2xl">
+            <i class="pi pi-lock text-brand-secondary text-xl"></i>
+            <div>
+              <h4 class="font-bold text-sm">Encriptación SSL</h4>
+              <p class="text-slate-400 text-xs mt-0.5">Cifrado de datos de 256 bits</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4 bg-slate-800/50 border border-slate-800 p-4 rounded-2xl">
+            <i class="pi pi-shield text-brand-secondary text-xl"></i>
+            <div>
+              <h4 class="font-bold text-sm">Prevención de Fraude</h4>
+              <p class="text-slate-400 text-xs mt-0.5">Sistemas de monitoreo inteligente</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer />

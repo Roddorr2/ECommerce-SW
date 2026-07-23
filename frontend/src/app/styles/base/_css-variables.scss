@@ -1,0 +1,6 @@
+@use '../abstracts/variables' as vars;
+
+:root {
+  --p-primary-color: #{vars.$primary-color};
+  --p-secondary-color: #{vars.$secondary-color};
+}

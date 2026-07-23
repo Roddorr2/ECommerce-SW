@@ -1,0 +1,194 @@
+<app-header />
+
+<div class="min-h-screen bg-slate-50 flex flex-col">
+  <!-- Hero Section -->
+  <div class="relative bg-slate-900 overflow-hidden py-16 sm:py-24">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(106,90,205,0.15),transparent_50%)]"></div>
+    <div class="absolute -top-40 -right-40 w-80 h-80 bg-brand-primary/10 rounded-full blur-3xl"></div>
+    
+    <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+      <span class="px-3 py-1 text-xs font-bold tracking-wider uppercase bg-brand-primary/20 text-brand-secondary rounded-full border border-brand-primary/30">
+        Información de Despacho
+      </span>
+      <h1 class="mt-4 text-4xl font-extrabold text-white tracking-tight sm:text-5xl">
+        Políticas de Envío
+      </h1>
+      <p class="mt-4 text-lg text-slate-300 max-w-2xl mx-auto">
+        Conoce nuestros tiempos de entrega, costos de envío, cobertura nacional y los procedimientos para garantizar que tu pedido llegue en perfectas condiciones.
+      </p>
+    </div>
+  </div>
+
+  <!-- Content Section -->
+  <div class="max-w-6xl mx-auto w-full px-6 py-12 flex-1">
+    
+    <!-- Delivery Types Grid -->
+    <h2 class="text-2xl font-extrabold text-slate-800 mb-8 text-center">Tiempos y Costos de Entrega</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+      <!-- Lima Metropolitana -->
+      <div class="bg-white rounded-2xl border border-slate-100 shadow-premium p-8 hover:-translate-y-1 transition-all duration-300 flex flex-col h-full">
+        <div class="w-12 h-12 rounded-xl bg-indigo-50 text-brand-primary flex items-center justify-center mb-6">
+          <i class="pi pi-map text-xl"></i>
+        </div>
+        <h3 class="text-xl font-bold text-slate-800">Lima Metropolitana</h3>
+        <p class="text-slate-500 mt-3 text-sm leading-relaxed flex-1">
+          Despacho prioritario directo para todos los distritos de Lima. Tus componentes tecnológicos en la puerta de tu hogar o local.
+        </p>
+        <div class="mt-6 pt-6 border-t border-slate-100">
+          <div class="flex items-center justify-between text-sm">
+            <span class="text-slate-400 font-semibold">Plazo:</span>
+            <span class="text-slate-700 font-bold">24 a 48 Horas Hábiles</span>
+          </div>
+          <div class="flex items-center justify-between text-sm mt-2">
+            <span class="text-slate-400 font-semibold">Costo:</span>
+            <span class="text-slate-700 font-bold">S/ 10.00 (Gratis > S/ 500)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Provincias Principales -->
+      <div class="bg-white rounded-2xl border border-slate-100 shadow-premium p-8 hover:-translate-y-1 transition-all duration-300 flex flex-col h-full">
+        <div class="w-12 h-12 rounded-xl bg-orange-50 text-brand-secondary flex items-center justify-center mb-6">
+          <i class="pi pi-truck text-xl"></i>
+        </div>
+        <h3 class="text-xl font-bold text-slate-800">Provincias Principales</h3>
+        <p class="text-slate-500 mt-3 text-sm leading-relaxed flex-1">
+          Envíos a capitales de departamentos (Arequipa, Trujillo, Cusco, Chiclayo, etc.) a través de operadores logísticos certificados.
+        </p>
+        <div class="mt-6 pt-6 border-t border-slate-100">
+          <div class="flex items-center justify-between text-sm">
+            <span class="text-slate-400 font-semibold">Plazo:</span>
+            <span class="text-slate-700 font-bold">3 a 5 Días Hábiles</span>
+          </div>
+          <div class="flex items-center justify-between text-sm mt-2">
+            <span class="text-slate-400 font-semibold">Costo:</span>
+            <span class="text-slate-700 font-bold">S/ 18.00 base</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Zonas Alejadas -->
+      <div class="bg-white rounded-2xl border border-slate-100 shadow-premium p-8 hover:-translate-y-1 transition-all duration-300 flex flex-col h-full">
+        <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-6">
+          <i class="pi pi-map-marker text-xl"></i>
+        </div>
+        <h3 class="text-xl font-bold text-slate-800">Zonas Especiales o Alejadas</h3>
+        <p class="text-slate-500 mt-3 text-sm leading-relaxed flex-1">
+          Llegamos a zonas rurales o distritos alejados de las capitales mediante agencias aliadas como Olva Courier o Shalóm.
+        </p>
+        <div class="mt-6 pt-6 border-t border-slate-100">
+          <div class="flex items-center justify-between text-sm">
+            <span class="text-slate-400 font-semibold">Plazo:</span>
+            <span class="text-slate-700 font-bold">5 a 7 Días Hábiles</span>
+          </div>
+          <div class="flex items-center justify-between text-sm mt-2">
+            <span class="text-slate-400 font-semibold">Costo:</span>
+            <span class="text-slate-700 font-bold">Según peso y volumen</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Process Flow / Timeline -->
+    <div class="bg-white rounded-3xl border border-slate-100 shadow-premium p-8 sm:p-12 mb-16">
+      <h2 class="text-2xl font-extrabold text-slate-800 mb-10 text-center">¿Cómo procesamos tu envío?</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
+        <!-- Connecting Line for MD screens -->
+        <div class="hidden md:block absolute top-10 left-8 right-8 h-0.5 bg-slate-100 -z-0"></div>
+
+        <!-- Step 1 -->
+        <div class="flex flex-col items-center text-center relative z-10">
+          <div class="w-12 h-12 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-lg border-4 border-slate-50">
+            1
+          </div>
+          <h4 class="font-bold text-slate-800 mt-4 text-base">Confirmación</h4>
+          <p class="text-xs text-slate-400 mt-2 px-2">
+            Validamos el pago y preparamos tu factura o boleta electrónica en minutos.
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="flex flex-col items-center text-center relative z-10">
+          <div class="w-12 h-12 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-lg border-4 border-slate-50">
+            2
+          </div>
+          <h4 class="font-bold text-slate-800 mt-4 text-base">Embalaje Seguro</h4>
+          <p class="text-xs text-slate-400 mt-2 px-2">
+            Embalamos tus productos con protección antiestática y burbujas de alta resistencia.
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="flex flex-col items-center text-center relative z-10">
+          <div class="w-12 h-12 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-lg border-4 border-slate-50">
+            3
+          </div>
+          <h4 class="font-bold text-slate-800 mt-4 text-base">Despacho</h4>
+          <p class="text-xs text-slate-400 mt-2 px-2">
+            Entregamos el paquete al motorizado o courier asignado con código de seguimiento.
+          </p>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="flex flex-col items-center text-center relative z-10">
+          <div class="w-12 h-12 rounded-full bg-brand-primary text-white flex items-center justify-center font-bold text-lg border-4 border-slate-50 shadow-lg shadow-brand-primary/20">
+            4
+          </div>
+          <h4 class="font-bold text-slate-800 mt-4 text-base">¡En tus Manos!</h4>
+          <p class="text-xs text-slate-400 mt-2 px-2">
+            Recibes el producto en tu domicilio. Se requerirá firma y DNI para verificar la recepción.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Important Rules / Bullet Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="bg-indigo-950/5 border border-indigo-100 rounded-2xl p-6 sm:p-8">
+        <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+          <i class="pi pi-info-circle text-brand-primary"></i>
+          Consideraciones Importantes
+        </h3>
+        <ul class="mt-4 space-y-3 text-slate-600 text-sm">
+          <li class="flex items-start gap-2">
+            <span class="text-brand-primary mt-1">•</span>
+            <span>Los despachos se realizan únicamente de <strong>Lunes a Sábado de 9:00 AM a 6:00 PM</strong> (excepto feriados).</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-brand-primary mt-1">•</span>
+            <span>Toda compra realizada después de las 2:00 PM se considerará para el procesamiento del siguiente día hábil.</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-brand-primary mt-1">•</span>
+            <span>Es responsabilidad del cliente detallar una dirección exacta con referencias claras y un teléfono de contacto activo.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bg-rose-950/5 border border-rose-100 rounded-2xl p-6 sm:p-8">
+        <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+          <i class="pi pi-shield text-brand-secondary"></i>
+          Garantía de Transporte
+        </h3>
+        <ul class="mt-4 space-y-3 text-slate-600 text-sm">
+          <li class="flex items-start gap-2">
+            <span class="text-brand-secondary mt-1">•</span>
+            <span>Todos los envíos viajan <strong>asegurados al 100%</strong> contra robos, pérdidas o daños fortuitos durante el transporte.</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-brand-secondary mt-1">•</span>
+            <span>Si el paquete presenta signos de haber sido abierto o dañado severamente, <strong>no lo reciba</strong> y repórtelo inmediatamente.</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-brand-secondary mt-1">•</span>
+            <span>Tiene un plazo de <strong>24 horas</strong> desde la entrega para reportar cualquier daño físico o producto incompleto.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer />

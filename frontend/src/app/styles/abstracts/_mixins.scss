@@ -1,0 +1,131 @@
+@use 'variables' as vars;
+
+@mixin auth-card($wrapper-bg: #ffffff, $card-max-width: 420px, $card-padding: 2rem, $animation: fadeIn) {
+  .wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: $wrapper-bg;
+    padding: 1rem;
+  }
+
+  .card {
+    width: 100%;
+    max-width: $card-max-width;
+    padding: $card-padding;
+    border-radius: 1rem;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    background: #fff;
+    animation: #{$animation} 0.5s ease-out;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+
+    .logo {
+      display: block;
+      margin: 0 auto 1rem auto;
+      height: 50px;
+    }
+
+    h2 {
+      margin: 0.5rem 0;
+      color: vars.$primary-color;
+      font-size: 1.75rem;
+      font-weight: 600;
+    }
+
+    p {
+      color: #666;
+      font-size: 0.9rem;
+      margin: 0;
+    }
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    .label {
+      font-weight: 600;
+      color: #333;
+      font-size: 0.9rem;
+    }
+
+    .p-error {
+      color: #ef4444;
+      font-size: 0.85rem;
+      margin-top: 0.25rem;
+    }
+  }
+
+  .button-container {
+    margin-top: 0.5rem;
+
+    button {
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 0.75rem;
+      background-color: vars.$primary-color;
+      border: 1px solid vars.$primary-color;
+      color: white;
+      transition: all 0.3s ease;
+
+      &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+      }
+    }
+  }
+
+  .footer {
+    text-align: center;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+
+    p {
+      margin: 0 0 0.5rem 0;
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    a {
+      color: vars.$primary-color;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+
+      &:hover {
+        text-decoration: underline;
+        color: darken(vars.$primary-color, 10%);
+      }
+    }
+  }
+
+  @media (max-width: 640px) {
+    .wrapper {
+      padding: 1rem;
+    }
+
+    .card {
+      padding: 1.5rem;
+    }
+
+    .header h2 {
+      font-size: 1.5rem;
+    }
+
+    .field .label {
+      font-size: 0.85rem;
+    }
+  }
+}

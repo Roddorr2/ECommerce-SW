@@ -1,0 +1,124 @@
+
+<div class="ordenes-cliente-container">
+  <p-toast />
+
+  <h2>Mis Órdenes</h2>
+
+  @if (cargando()) {
+    <div class="text-center py-5">
+      <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+    </div>
+  } @else if (ordenes().length === 0) {
+    <div class="ordenes-vacio">
+      <i class="pi pi-inbox"></i>
+      <p>No tienes órdenes registradas.</p>
+    </div>
+  } @else {
+    <div class="ordenes-lista">
+      @for (orden of ordenes(); track orden.id) {
+        <div class="orden-card">
+          <div class="orden-card-header">
+            <div class="orden-info">
+              <span class="orden-id">Orden #{{ orden.id }}</span>
+              <span [class]="getBadgeClass(orden.estado)">{{ orden.estado }}</span>
+            </div>
+            <small>{{ orden.fechaOrden | date: 'dd/MM/yyyy HH:mm' }}</small>
+          </div>
+          <div class="orden-card-body">
+            <p><strong>Items:</strong> {{ orden.cantidadItems }}</p>
+            <p><strong>Total:</strong> {{ orden.total | currency: 'PEN' : 'symbol' : '1.2-2' }}</p>
+          </div>
+          <div class="orden-card-footer">
+            <button
+              pButton
+              icon="pi pi-eye"
+              label="Ver detalle"
+              class="p-button-outlined p-button-sm"
+              (click)="verDetalle(orden.id)"
+            ></button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <p-dialog
+    [visible]="mostrarDetalle()"
+    (visibleChange)="mostrarDetalle.set($event)"
+    header="Detalle de Orden"
+    [modal]="true"
+    [draggable]="false"
+    [resizable]="false"
+    [style]="{ width: '600px' }"
+  >
+    @if (ordenSeleccionada()) {
+      <div class="detalle-info">
+        <p><strong>Orden:</strong> #{{ ordenSeleccionada()!.id }}</p>
+        <p>
+          <strong>Fecha:</strong> {{ ordenSeleccionada()!.fechaOrden | date: 'dd/MM/yyyy HH:mm' }}
+        </p>
+        <p>
+          <strong>Estado:</strong>
+          <span [class]="getBadgeClass(ordenSeleccionada()!.estado.codigo)">
+            {{ ordenSeleccionada()!.estado.codigo }}
+          </span>
+        </p>
+        <p><strong>Método de pago:</strong> {{ ordenSeleccionada()!.metodoPago.nombre }}</p>
+        @if (ordenSeleccionada()!.direccionEnvio) {
+          <p><strong>Dirección:</strong> {{ ordenSeleccionada()!.direccionEnvio }}</p>
+        }
+        <p>
+          <strong>Total:</strong>
+          {{ ordenSeleccionada()!.total | currency: 'PEN' : 'symbol' : '1.2-2' }}
+        </p>
+      </div>
+
+      <table class="detalle-tabla">
+        <thead>
+          <tr>
+            <th>ProductoService</th>
+            <th>SKU</th>
+            <th>Cantidad</th>
+            <th>Precio unit.</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (d of ordenSeleccionada()!.detalles; track d.id) {
+            <tr>
+              <td>{{ d.producto.nombre }}</td>
+              <td>{{ d.producto.sku }}</td>
+              <td>{{ d.cantidad }}</td>
+              <td>{{ d.precioUnitario | currency: 'PEN' : 'symbol' : '1.2-2' }}</td>
+              <td>{{ d.subtotal | currency: 'PEN' : 'symbol' : '1.2-2' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      @if (ordenSeleccionada()!.estado.codigo === EstadoOrden.PENDIENTE) {
+        <div class="detalle-actions">
+          <button
+            pButton
+            type="button"
+            label="Cancelar orden"
+            icon="pi pi-times"
+            class="p-button-danger"
+            (click)="cancelarOrden(ordenSeleccionada()!.id)"
+          ></button>
+        </div>
+      }
+    }
+    <ng-template pTemplate="footer">
+      <button
+        pButton
+        type="button"
+        label="Cerrar"
+        icon="pi pi-times"
+        class="p-button-text"
+        (click)="mostrarDetalle.set(false)"
+      ></button>
+    </ng-template>
+  </p-dialog>
+</div>
+
