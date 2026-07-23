@@ -4,11 +4,15 @@ import com.ecommerce.app.sales.application.dto.request.ActualizarClienteRequest;
 import com.ecommerce.app.sales.application.dto.request.CrearClienteRequest;
 import com.ecommerce.app.sales.application.dto.response.ClienteResponse;
 import com.ecommerce.app.sales.application.service.ClienteService;
+import com.ecommerce.app.shared.domain.model.Usuario;
+import com.ecommerce.app.shared.domain.port.UsuarioPort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,9 +23,17 @@ import java.util.List;
 public class ClienteController {
 
     private final ClienteService clienteService;
+    private final UsuarioPort usuarioPort;
 
-    public ClienteController(ClienteService clienteService) {
+    public ClienteController(ClienteService clienteService, UsuarioPort usuarioPort) {
         this.clienteService = clienteService;
+        this.usuarioPort = usuarioPort;
+    }
+
+    private Integer obtenerUsuarioId(UserDetails userDetails) {
+        Usuario usuario = usuarioPort.findByCorreo(userDetails.getUsername())
+                .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con correo: " + userDetails.getUsername()));
+        return usuario.getId();
     }
 
     @GetMapping
@@ -65,10 +77,20 @@ public class ClienteController {
         return ResponseEntity.ok(cliente);
     }
 
+    @GetMapping("/perfil")
+    @PreAuthorize("hasAuthority('Cliente')")
+    @Operation(summary = "Obtener perfil del cliente autenticado", description = "Permite a un cliente obtener sus propios datos de perfil")
+    public ResponseEntity<ClienteResponse> obtenerPerfil(@AuthenticationPrincipal UserDetails userDetails) {
+        Integer usuarioId = obtenerUsuarioId(userDetails);
+        ClienteResponse cliente = clienteService.obtenerPorUsuarioId(usuarioId);
+        return ResponseEntity.ok(cliente);
+    }
+
     @PutMapping("/perfil")
     @PreAuthorize("hasAuthority('Cliente')")
     @Operation(summary = "Actualizar perfil del cliente autenticado", description = "Permite a un cliente actualizar únicamente su propio perfil")
-    public ResponseEntity<ClienteResponse> actualizarPerfil(@AuthenticationPrincipal(expression = "id") Integer usuarioId, @RequestBody ActualizarClienteRequest request) {
+    public ResponseEntity<ClienteResponse> actualizarPerfil(@AuthenticationPrincipal UserDetails userDetails, @RequestBody ActualizarClienteRequest request) {
+        Integer usuarioId = obtenerUsuarioId(userDetails);
         ClienteResponse cliente = clienteService.actualizarPerfil(usuarioId, request);
         return ResponseEntity.ok(cliente);
     }

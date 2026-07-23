@@ -96,6 +96,7 @@ public class AuthServiceTest {
         @DisplayName("dado credenciales válidas, cuando inicia sesión, entonces autentica, genera código, envía email y requiere 2FA")
         void dadoCredencialesValidas_cuandoLogin_entoncesGeneraCodigoEnviaEmailYRetornaRequiere2FA() {
             // Given
+            usuario.setDobleFactorActivo(true);
             AuthRequest request = new AuthRequest("carlos@ecommerce.com", "password");
 
             when(usuarioPort.findByCorreo("carlos@ecommerce.com")).thenReturn(Optional.of(usuario));
@@ -135,6 +136,7 @@ public class AuthServiceTest {
         @DisplayName("dado error al enviar el email, cuando inicia sesión, entonces lanza RuntimeException de error en envío")
         void dadoErrorEnEnvioEmail_cuandoLogin_entoncesLanzaRuntimeException() {
             // Given
+            usuario.setDobleFactorActivo(true);
             AuthRequest request = new AuthRequest("carlos@ecommerce.com", "password");
 
             when(usuarioPort.findByCorreo("carlos@ecommerce.com")).thenReturn(Optional.of(usuario));
@@ -265,6 +267,7 @@ public class AuthServiceTest {
             when(usuarioPort.findByCorreo("carlos@ecommerce.com")).thenReturn(Optional.empty());
             when(rolPort.findByNombre("Cliente")).thenReturn(Optional.of(rolCliente));
             when(passwordEncoder.encode("password")).thenReturn("encoded-new-pass");
+            when(usuarioPort.save(any(Usuario.class))).thenAnswer(invocation -> invocation.getArgument(0));
             when(jwtUtil.generateToken("carlos@ecommerce.com", "Cliente")).thenReturn("new-jwt-token");
 
             ArgumentCaptor<Usuario> captorUsuario = ArgumentCaptor.forClass(Usuario.class);
