@@ -136,7 +136,7 @@ public class OrdenService {
                 eventItems
         ));
 
-        orden.setEstadoOrden(EstadoOrdenCodigo.PENDIENTE);
+        orden.setEstadoOrden(EstadoOrdenCodigo.CANCELADO);
         Orden ordenCancelada = ordenPort.guardar(orden);
 
         return ordenMapper.toResponse(ordenCancelada);

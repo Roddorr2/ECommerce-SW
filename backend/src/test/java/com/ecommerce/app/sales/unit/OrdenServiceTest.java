@@ -262,8 +262,8 @@ public class OrdenServiceTest {
     class CancelarOrden {
 
         @Test
-        @DisplayName("dado orden cancelable, cuando se cancela, entonces publica evento y transiciona a PENDIENTE")
-        void dadoOrdenCancelable_cuandoCancelarOrden_entoncesPublicaEventYEstablecePendiente() {
+        @DisplayName("dado orden cancelable, cuando se cancela, entonces publica evento y transiciona a CANCELADO")
+        void dadoOrdenCancelable_cuandoCancelarOrden_entoncesPublicaEventYEstableceCancelado() {
             // Given
             producto.setStock(15);
             when(ordenPort.buscarPorId(100)).thenReturn(Optional.of(ordenPendiente));
@@ -275,7 +275,7 @@ public class OrdenServiceTest {
 
             // Then
             assertThat(resultado).isNotNull();
-            assertThat(ordenPendiente.getEstadoOrden()).isEqualTo(EstadoOrdenCodigo.PENDIENTE);
+            assertThat(ordenPendiente.getEstadoOrden()).isEqualTo(EstadoOrdenCodigo.CANCELADO);
 
             verify(eventPublisher).publishEvent(any(OrdenCanceladaEvent.class));
             verify(ordenPort).guardar(ordenPendiente);

@@ -1,6 +1,6 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { appConfig } from './app/app.config';
-import { App } from './app/app';
+import { AppComponent } from './app/app.component';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { importProvidersFrom } from '@angular/core';
@@ -23,4 +23,4 @@ const config = {
   ],
 };
 
-bootstrapApplication(App, config).catch((err) => console.error(err));
+bootstrapApplication(AppComponent, config).catch((err) => console.error(err));

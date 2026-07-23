@@ -1,0 +1,63 @@
+@if (tieneSlides()) {
+  <div class="slider-container"
+       (mouseenter)="pausar()"
+       (mouseleave)="reanudar()"
+       (touchstart)="onTouchStart($event)"
+       (touchend)="onTouchEnd($event)">
+
+    <div class="slider-track">
+      @for (slide of slides(); track $index) {
+        <div class="slide" [class.active]="$index === indiceActual()">
+          <img
+            [src]="slide.imagen"
+            [alt]="slide.titulo"
+            class="slide-imagen"
+            (click)="onSlideClick()" />
+
+          <div class="slide-overlay">
+            <div class="slide-contenido">
+              <h2 class="slide-titulo">{{ slide.titulo }}</h2>
+              @if (slide.subtitulo) {
+                <p class="slide-subtitulo">{{ slide.subtitulo }}</p>
+              }
+              @if (slide.link) {
+                <button class="slide-boton" (click)="onSlideClick()">
+                  Ver más
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    @if (mostrarControles()) {
+      <button class="slider-control slider-prev" (click)="anterior()" type="button">
+        <i class="pi pi-chevron-left"></i>
+      </button>
+      <button class="slider-control slider-next" (click)="siguiente()" type="button">
+        <i class="pi pi-chevron-right"></i>
+      </button>
+    }
+
+    @if (mostrarIndicadores()) {
+      <div class="slider-indicadores">
+        @for (slide of slides(); track $index) {
+          <button
+            class="indicador"
+            [class.active]="$index === indiceActual()"
+            (click)="irASlide($index)"
+            type="button">
+            <span class="indicador-progreso" [style.transform]="$index === indiceActual() ? 'scaleX(1)' : 'scaleX(0)'"></span>
+          </button>
+        }
+      </div>
+    }
+
+    @if (autoPlay()) {
+      <button class="slider-pause" (click)="togglePausa()" type="button">
+        <i [class]="estaPausado() ? 'pi pi-play' : 'pi pi-pause'"></i>
+      </button>
+    }
+  </div>
+}

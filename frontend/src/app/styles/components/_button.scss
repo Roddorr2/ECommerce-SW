@@ -1,29 +1,29 @@
-@use '../abstracts/variables' as *;
+@use '../abstracts/variables' as vars;
 @use 'sass:color';
 
 @mixin base-button {
-    border: none;
-    padding: 0.6rem 1.2rem;
-    font-weight: 600;
-    font-size: 1rem;
-    border-radius: $btn-border-radius;
-    background-color: $background-color;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    text-align: center;
-    display: inline-block;
-  }
+  border: none;
+  padding: 0.6rem 1.2rem;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: vars.$btn-border-radius;
+  background-color: vars.$background-color;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  text-align: center;
+  display: inline-block;
+}
 
 @mixin btn-styles {
-    @include base-button;
-    background-color: $base-color;
-    color: $primary-color;
-    border: 1.5px solid $primary-color;
-    box-shadow: $btn-box-shadow;
-    
-    &:hover {
-      background-color: $btn-hover-bg;
-      color: $base-color;
-      transform: translateY(-2px);
-    }
+  @include base-button;
+  background-color: vars.$base-color;
+  color: vars.$primary-color;
+  border: 1.5px solid vars.$primary-color;
+  box-shadow: vars.$btn-box-shadow;
+
+  &:hover {
+    background-color: vars.$btn-hover-bg;
+    color: vars.$base-color;
+    transform: translateY(-2px);
   }
+}

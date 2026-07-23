@@ -1,0 +1,97 @@
+<footer class="w-full bg-slate-900 border-t border-slate-800 text-slate-400 mt-auto">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-6 py-12 md:px-12">
+    <!-- Brand Info -->
+    <div class="flex flex-col gap-4">
+      <div class="flex items-center gap-3 cursor-pointer" (click)="navegarA('/home')">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-secondary to-brand-primary flex items-center justify-center shadow-md">
+          <span class="text-white font-bold text-xl tracking-wider">TF</span>
+        </div>
+        <span class="font-extrabold text-xl text-white">Technology Fix</span>
+      </div>
+      <p class="text-sm leading-relaxed text-slate-400">
+        Somos una plataforma de comercio electrónico comprometida con ofrecer
+        los mejores productos y servicios tecnológicos a nuestros clientes.
+      </p>
+    </div>
+
+    <!-- Links 1 -->
+    <div class="flex flex-col gap-4">
+      <h3 class="text-white font-semibold text-lg tracking-wider uppercase text-xs border-b border-slate-800 pb-2">Categorías</h3>
+      <ul class="flex flex-col gap-2 text-sm">
+        <li><a (click)="navegarA('/home')" class="hover:text-white transition-colors duration-200 cursor-pointer">Productos</a></li>
+        <li><a (click)="navegarA('/home')" class="hover:text-white transition-colors duration-200 cursor-pointer">Ofertas</a></li>
+        <li><a (click)="navegarMiCuenta()" class="hover:text-white transition-colors duration-200 cursor-pointer">Mi Cuenta</a></li>
+      </ul>
+    </div>
+
+    <!-- Links 2 -->
+    <div class="flex flex-col gap-4">
+      <h3 class="text-white font-semibold text-lg tracking-wider uppercase text-xs border-b border-slate-800 pb-2">Ayuda</h3>
+      <ul class="flex flex-col gap-2 text-sm">
+        <li><a (click)="navegarA('/faq')" class="hover:text-white transition-colors duration-200 cursor-pointer">Preguntas Frecuentes</a></li>
+        <li><a (click)="navegarA('/politicas-envio')" class="hover:text-white transition-colors duration-200 cursor-pointer">Políticas de Envío</a></li>
+        <li><a (click)="navegarA('/metodos-pago')" class="hover:text-white transition-colors duration-200 cursor-pointer">Métodos de Pago</a></li>
+        <li><a (click)="navegarA('/soporte-tecnico')" class="hover:text-white transition-colors duration-200 cursor-pointer">Soporte Técnico</a></li>
+      </ul>
+    </div>
+
+    <!-- Contact & Social -->
+    <div class="flex flex-col gap-4">
+      <h3 class="text-white font-semibold text-lg tracking-wider uppercase text-xs border-b border-slate-800 pb-2">Síguenos</h3>
+      <div class="flex flex-col gap-3 text-sm">
+        <div class="flex items-center gap-3">
+          <i class="pi pi-envelope text-brand-secondary"></i>
+          <span>technologyfix@gmail.com</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <i class="pi pi-phone text-brand-secondary"></i>
+          <span>+51 999 999 999</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <i class="pi pi-map-marker text-brand-secondary"></i>
+          <span>Lima, Perú</span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 mt-2">
+        <button
+          (click)="abrirRedSocial('https://facebook.com')"
+          class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-brand-primary text-slate-300 hover:text-white flex items-center justify-center transition-all duration-200 cursor-pointer border-0"
+          title="Facebook"
+        >
+          <i class="pi pi-facebook text-base"></i>
+        </button>
+        <button
+          (click)="abrirRedSocial('https://twitter.com')"
+          class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-brand-primary text-slate-300 hover:text-white flex items-center justify-center transition-all duration-200 cursor-pointer border-0"
+          title="Twitter"
+        >
+          <i class="pi pi-twitter text-base"></i>
+        </button>
+        <button
+          (click)="abrirRedSocial('https://instagram.com')"
+          class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-brand-primary text-slate-300 hover:text-white flex items-center justify-center transition-all duration-200 cursor-pointer border-0"
+          title="Instagram"
+        >
+          <i class="pi pi-instagram text-base"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Copyright -->
+  <div class="border-t border-slate-800 bg-slate-950/40 py-6 px-6 md:px-12">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
+      <p class="text-slate-500">
+        © {{ currentYear() }} Technology Fix. Todos los derechos reservados.
+      </p>
+      <div class="flex items-center gap-4 text-slate-500">
+        <a href="#" class="hover:text-white transition-colors duration-200">Términos</a>
+        <span>|</span>
+        <a href="#" class="hover:text-white transition-colors duration-200">Privacidad</a>
+        <span>|</span>
+        <span>Hecho con ❤️ en Perú</span>
+      </div>
+    </div>
+  </div>
+</footer>

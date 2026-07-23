@@ -1,8 +1,5 @@
+$font-main: 'Outfit', 'Segoe UI', 'Segoe UI Web', 'Helvetica Neue', sans-serif;
 
-$font-main: 'Segoe UI', 'Segoe UI Web', 'Helvetica Neue', sans-serif;
-
-*,
-*::before,
-*::after {
-  font-family: $font-main !important;
+body {
+  font-family: $font-main;
 }

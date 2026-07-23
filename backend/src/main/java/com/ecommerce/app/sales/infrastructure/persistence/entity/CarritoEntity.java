@@ -8,16 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "carrito", uniqueConstraints = {
-        @UniqueConstraint(name = "uk_carrito_cliente", columnNames = "cliente_id"),
-})
+@Table(name = "carrito")
 public class CarritoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false, foreignKey = @ForeignKey(name = "fk_cliente_carrito"))
     private ClienteEntity cliente;
 

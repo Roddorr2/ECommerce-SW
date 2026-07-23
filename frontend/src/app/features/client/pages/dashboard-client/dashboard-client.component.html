@@ -1,0 +1,71 @@
+<p-toast />
+
+<app-header />
+
+<div class="client-dashboard-container">
+  <div class="client-dashboard-content">
+    @if (isMobile() || isTablet()) {
+      <button
+        pButton
+        type="button"
+        icon="pi pi-align-justify"
+        class="p-button-text p-button-rounded menu-toggle"
+        (click)="toggleSidebar()"
+        [title]="sidebarVisible() ? 'Ocultar menú' : 'Mostrar menú'"
+      ></button>
+    }
+
+    @if (mostrarOverlay()) {
+      <div class="sidebar-overlay" (click)="closeSidebar()"></div>
+    }
+
+    <aside
+      class="sidebar"
+      [class.visible]="sidebarVisible()"
+      [class.mobile]="isMobile()"
+      [class.tablet]="isTablet()"
+    >
+      <div class="sidebar-header">
+        <div class="user-info">
+          <i class="pi pi-user-circle user-avatar"></i>
+          <div class="user-text">
+            <h3>Mi Cuenta</h3>
+            <p>{{ nombreUsuario() }}</p>
+          </div>
+        </div>
+        @if (isMobile() || isTablet()) {
+          <button
+            pButton
+            type="button"
+            icon="pi pi-times"
+            class="p-button-text p-button-rounded close-sidebar"
+            (click)="closeSidebar()"
+          ></button>
+        }
+      </div>
+
+      <p-panelMenu [model]="menuItems" [style]="{ width: '100%' }"></p-panelMenu>
+
+      <div class="sidebar-footer">
+        <button
+          pButton
+          type="button"
+          label="Cerrar Sesión"
+          icon="pi pi-sign-out"
+          class="p-button-text logout-btn"
+          (click)="logout()"
+        ></button>
+      </div>
+    </aside>
+
+    <main class="client-content" [class.expanded]="!sidebarVisible()">
+      <div class="welcome-banner">
+        <h1>{{ bienvenida() }}</h1>
+        <p>¿Qué te gustaría hacer hoy?</p>
+      </div>
+      <router-outlet />
+    </main>
+  </div>
+
+  <app-footer />
+</div>

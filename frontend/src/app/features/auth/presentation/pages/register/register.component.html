@@ -1,0 +1,160 @@
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-slate-50 to-indigo-100/50 py-12 px-4 sm:px-6 lg:px-8 font-sans">
+  <p-toast />
+
+  <div class="max-w-2xl w-full space-y-8 bg-white p-8 sm:p-10 rounded-2xl border border-indigo-50/50 shadow-premium-lg transition-all duration-300 hover:shadow-2xl">
+    <!-- Header -->
+    <div class="text-center">
+      <div class="mx-auto w-12 h-12 rounded-2xl bg-gradient-to-tr from-brand-secondary to-brand-primary flex items-center justify-center shadow-md mb-4">
+        <span class="text-white font-bold text-2xl tracking-wider">TF</span>
+      </div>
+      <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Crear Cuenta</h2>
+      <p class="mt-2 text-sm text-slate-500">Completa tus datos para registrarte en la plataforma</p>
+    </div>
+
+    <!-- Form -->
+    <form [formGroup]="form" (ngSubmit)="registrar()" class="mt-8 space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+        <!-- Nombre completo -->
+        <div class="flex flex-col gap-1.5 md:col-span-2">
+          <label for="nombre" class="text-sm font-semibold text-slate-700">Nombre completo</label>
+          <div class="flex rounded-xl shadow-sm border border-slate-200 overflow-hidden focus-within:border-brand-primary focus-within:ring-2 focus-within:ring-brand-primary/20 transition-all">
+            <span class="inline-flex items-center px-3.5 bg-slate-50 border-r border-slate-200 text-slate-400">
+              <i class="pi pi-user"></i>
+            </span>
+            <input
+              id="nombre"
+              type="text"
+              pInputText
+              formControlName="nombre"
+              placeholder="Ej. Juan Pérez"
+              class="block w-full border-0 px-3.5 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:ring-0 focus:outline-none"
+              [class.border-red-500]="form.get('nombre')?.invalid && form.get('nombre')?.touched"
+            />
+          </div>
+          @if (form.get('nombre')?.invalid && form.get('nombre')?.touched) {
+            <small class="text-red-500 text-xs mt-1">El nombre debe tener entre 3 y 100 caracteres.</small>
+          }
+        </div>
+
+        <!-- Correo electrónico -->
+        <div class="flex flex-col gap-1.5">
+          <label for="correo" class="text-sm font-semibold text-slate-700">Correo electrónico</label>
+          <div class="flex rounded-xl shadow-sm border border-slate-200 overflow-hidden focus-within:border-brand-primary focus-within:ring-2 focus-within:ring-brand-primary/20 transition-all">
+            <span class="inline-flex items-center px-3.5 bg-slate-50 border-r border-slate-200 text-slate-400">
+              <i class="pi pi-envelope"></i>
+            </span>
+            <input
+              id="correo"
+              type="email"
+              pInputText
+              formControlName="correo"
+              placeholder="correo@ejemplo.com"
+              class="block w-full border-0 px-3.5 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:ring-0 focus:outline-none"
+              [class.border-red-500]="form.get('correo')?.invalid && form.get('correo')?.touched"
+            />
+          </div>
+          @if (form.get('correo')?.invalid && form.get('correo')?.touched) {
+            <small class="text-red-500 text-xs mt-1">Ingrese un correo electrónico válido.</small>
+          }
+        </div>
+
+        <!-- Teléfono -->
+        <div class="flex flex-col gap-1.5">
+          <label for="telefono" class="text-sm font-semibold text-slate-700">Teléfono</label>
+          <div class="flex rounded-xl shadow-sm border border-slate-200 overflow-hidden focus-within:border-brand-primary focus-within:ring-2 focus-within:ring-brand-primary/20 transition-all">
+            <span class="inline-flex items-center px-3.5 bg-slate-50 border-r border-slate-200 text-slate-400">
+              <i class="pi pi-phone"></i>
+            </span>
+            <input
+              id="telefono"
+              type="text"
+              pInputText
+              formControlName="telefono"
+              placeholder="987654321"
+              class="block w-full border-0 px-3.5 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:ring-0 focus:outline-none"
+              [class.border-red-500]="form.get('telefono')?.invalid && form.get('telefono')?.touched"
+            />
+          </div>
+          @if (form.get('telefono')?.invalid && form.get('telefono')?.touched) {
+            <small class="text-red-500 text-xs mt-1">Ingrese un teléfono válido.</small>
+          }
+        </div>
+
+        <!-- Contraseña -->
+        <div class="flex flex-col gap-1.5">
+          <label for="contrasena" class="text-sm font-semibold text-slate-700">Contraseña</label>
+          <div class="flex rounded-xl shadow-sm border border-slate-200 overflow-hidden focus-within:border-brand-primary focus-within:ring-2 focus-within:ring-brand-primary/20 transition-all">
+            <span class="inline-flex items-center px-3.5 bg-slate-50 border-r border-slate-200 text-slate-400">
+              <i class="pi pi-lock"></i>
+            </span>
+            <p-password
+              id="contrasena"
+              formControlName="contrasena"
+              [toggleMask]="true"
+              [feedback]="true"
+              placeholder="Mínimo 8 caracteres"
+              styleClass="w-full"
+              inputStyleClass="w-full border-0 px-3.5 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:ring-0 focus:outline-none"
+              [class.border-red-500]="form.get('contrasena')?.invalid && form.get('contrasena')?.touched"
+            />
+          </div>
+          @if (form.get('contrasena')?.invalid && form.get('contrasena')?.touched) {
+            <small class="text-red-500 text-xs mt-1">La contraseña debe tener entre 8 y 256 caracteres.</small>
+          }
+        </div>
+
+        <!-- Dirección -->
+        <div class="flex flex-col gap-1.5">
+          <label for="direccion" class="text-sm font-semibold text-slate-700">Dirección</label>
+          <div class="flex rounded-xl shadow-sm border border-slate-200 overflow-hidden focus-within:border-brand-primary focus-within:ring-2 focus-within:ring-brand-primary/20 transition-all">
+            <span class="inline-flex items-center px-3.5 bg-slate-50 border-r border-slate-200 text-slate-400">
+              <i class="pi pi-map-marker"></i>
+            </span>
+            <input
+              id="direccion"
+              type="text"
+              pInputText
+              formControlName="direccion"
+              placeholder="Av. Ejemplo 123"
+              class="block w-full border-0 px-3.5 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:ring-0 focus:outline-none"
+              [class.border-red-500]="form.get('direccion')?.invalid && form.get('direccion')?.touched"
+            />
+          </div>
+          @if (form.get('direccion')?.invalid && form.get('direccion')?.touched) {
+            <small class="text-red-500 text-xs mt-1">La dirección es obligatoria.</small>
+          }
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-col sm:flex-row gap-3 pt-4">
+        <button
+          type="button"
+          routerLink="/home"
+          class="flex-1 px-5 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-sm transition-all duration-200 cursor-pointer flex items-center justify-center gap-2"
+        >
+          <i class="pi pi-arrow-left"></i>
+          <span>Volver al inicio</span>
+        </button>
+
+        <button
+          type="submit"
+          [disabled]="form.invalid || cargando"
+          class="flex-1 px-5 py-2.5 rounded-xl bg-brand-primary hover:bg-brand-primary-hover disabled:bg-slate-200 text-white font-semibold text-sm transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 shadow-md shadow-brand-primary/10 disabled:shadow-none"
+        >
+          @if (cargando) {
+            <i class="pi pi-spin pi-spinner"></i>
+          } @else {
+            <i class="pi pi-user-plus"></i>
+          }
+          <span>Registrarse</span>
+        </button>
+      </div>
+
+      <!-- Footer Links -->
+      <div class="border-t border-slate-100 pt-6 text-center text-sm">
+        <p class="text-slate-500">¿Ya tienes una cuenta? <a routerLink="/auth/login" class="font-semibold text-brand-primary hover:text-brand-primary-hover transition-colors">Inicia sesión aquí</a></p>
+      </div>
+    </form>
+  </div>
+</div>

@@ -23,7 +23,7 @@ public class MovimientoStockController {
     }
 
     @GetMapping("/producto/{productoId}")
-    @PreAuthorize("hasAnyRole('Administrador')")
+    @PreAuthorize("hasAuthority('Administrador')")
     @Operation(summary = "Obtener movimientos de un producto", description = "Retorna el historial de movimientos de stock de un producto específico")
     public ResponseEntity<List<MovimientoStockResponse>> obtenerMovimientosPorProducto(@PathVariable Integer productoId) {
         return ResponseEntity.ok(movimientoStockService.obtenerMovimientos(productoId));

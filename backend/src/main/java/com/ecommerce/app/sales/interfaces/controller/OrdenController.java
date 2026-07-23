@@ -41,17 +41,30 @@ public class OrdenController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('Cliente')")
+    @PreAuthorize("hasAuthority('Cliente')")
     @Operation(summary = "Crear orden desde carrito", description = "Convierte el carrito activo en una orden de venta")
     public ResponseEntity<OrdenResponse> crearOrdenDesdeCarrito(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody CrearOrdenDesdeCarritoRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(ordenService.crearOrdenDesdeCarrito(obtenerClienteId(userDetails), request));
     }
 
-    @GetMapping
-    @PreAuthorize("hasAnyRole('Cliente', 'Empleado', 'Administrador')")
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('Cliente', 'Empleado', 'Administrador')")
     @Operation(summary = "Obtener orden por ID", description = "Retorna los detalles de una orden específica")
-    public ResponseEntity<OrdenResponse> obtenerPorId(@AuthenticationPrincipal UserDetails userDetails) {
-        return ResponseEntity.ok(ordenService.obtenerPorId(obtenerClienteId(userDetails)));
+    public ResponseEntity<OrdenResponse> obtenerPorId(@PathVariable Integer id, @AuthenticationPrincipal UserDetails userDetails) {
+        OrdenResponse orden = ordenService.obtenerPorId(id);
+        
+        // Si el usuario es Cliente, solo puede ver sus propias órdenes
+        boolean esCliente = userDetails.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("Cliente"));
+        
+        if (esCliente) {
+            Integer clienteId = obtenerClienteId(userDetails);
+            if (!orden.cliente().id().equals(clienteId)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+        }
+        
+        return ResponseEntity.ok(orden);
     }
 
     @GetMapping("/ordenes")
@@ -76,21 +89,21 @@ public class OrdenController {
     }
 
     @GetMapping("/estado/{codigoEstado}")
-    @PreAuthorize("hasAnyRole('Empleado', 'Administrador')")
+    @PreAuthorize("hasAnyAuthority('Empleado', 'Administrador')")
     @Operation(summary = "Obtener órdenes por estado", description = "Retorna todas las órdenes con un estado específico")
     public ResponseEntity<List<OrdenResumenResponse>> obtenerOrdenesPorEstado(@PathVariable EstadoOrdenCodigo codigoEstado) {
         return ResponseEntity.ok(ordenService.obtenerOrdenesPorEstado(codigoEstado));
     }
 
     @PutMapping("/{ordenId}/estado")
-    @PreAuthorize("hasAnyRole('Empleado', 'Administrador')")
+    @PreAuthorize("hasAnyAuthority('Empleado', 'Administrador')")
     @Operation(summary = "Cambiar estado de orden", description = "Actualiza el estado de una orden")
     public ResponseEntity<OrdenResponse> cambiarEstado(@PathVariable Integer ordenId, @Valid @RequestBody CambiarEstadoOrdenRequest request) {
         return ResponseEntity.ok(ordenService.cambiarEstado(ordenId, request));
     }
 
     @PostMapping("/{ordenId}/cancelar")
-    @PreAuthorize("hasAnyRole('Cliente', 'Empleado', 'Administrador')")
+    @PreAuthorize("hasAnyAuthority('Cliente', 'Empleado', 'Administrador')")
     @Operation(summary = "Cancelar orden", description = "Cancela una orden y devuelve el stock al inventario")
     public ResponseEntity<OrdenResponse> cancelarOrden(@PathVariable Integer ordenId, @RequestParam(required = false) String motivo) {
         return ResponseEntity.ok(ordenService.cancelarOrden(ordenId, motivo));

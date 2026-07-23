@@ -1,0 +1,138 @@
+<p-toast />
+
+<div class="max-w-7xl mx-auto px-6 py-6 md:px-12 flex-1 w-full">
+  <div class="mb-8 border-b border-slate-100 pb-6">
+    <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Carrito de Compras</h2>
+    <p class="mt-1.5 text-sm text-slate-500">Revisa tus artículos antes de proceder con el pago seguro.</p>
+  </div>
+
+  @if (cargando()) {
+    <div class="flex flex-col items-center justify-center py-20">
+      <div class="w-10 h-10 border-4 border-indigo-200 border-t-brand-primary rounded-full animate-spin"></div>
+      <p class="text-slate-400 text-sm mt-4 font-medium">Cargando tu carrito...</p>
+    </div>
+  } @else if (!carrito() || carrito()!.items.length === 0) {
+    <div class="flex flex-col items-center justify-center py-20 text-center bg-white rounded-2xl border border-slate-100 shadow-premium p-8">
+      <div class="w-20 h-20 rounded-full bg-indigo-50 flex items-center justify-center text-brand-primary mb-6">
+        <i class="pi pi-shopping-cart text-4xl"></i>
+      </div>
+      <h3 class="text-xl font-bold text-slate-800">Tu carrito está vacío</h3>
+      <p class="text-slate-400 text-sm mt-2 max-w-sm">Parece que aún no has agregado ningún producto tecnológico. ¡Explora nuestro catálogo para empezar!</p>
+      <button routerLink="/cliente/productos" class="mt-6 px-6 py-3 rounded-xl bg-brand-primary hover:bg-brand-primary-hover text-white font-semibold text-sm shadow-md shadow-brand-primary/10 transition-all duration-200 cursor-pointer border-0">
+        Explorar Productos
+      </button>
+    </div>
+  } @else {
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+      <!-- Products List (Left side) -->
+      <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-100 shadow-premium overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-50/75 border-b border-slate-100 text-xs font-bold text-slate-500 uppercase tracking-wider">
+                <th class="py-4 px-6">Producto</th>
+                <th class="py-4 px-6 text-right">Precio</th>
+                <th class="py-4 px-6 text-center">Cantidad</th>
+                <th class="py-4 px-6 text-right">Subtotal</th>
+                <th class="py-4 px-6 text-center">Acción</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 text-sm">
+              @for (item of carrito()!.items; track item.id) {
+                <tr class="hover:bg-slate-50/50 transition-colors">
+                  <td class="py-4 px-6 font-semibold text-slate-800">
+                    {{ item.productoNombre }}
+                  </td>
+                  <td class="py-4 px-6 text-right text-slate-600 font-medium">
+                    {{ item.precioUnitario | currency: 'PEN' : 'symbol' : '1.2-2' }}
+                  </td>
+                  <td class="py-4 px-6 text-center">
+                    <input
+                      type="number"
+                      min="1"
+                      class="w-16 px-2.5 py-1.5 text-center border border-slate-200 rounded-lg text-slate-800 text-xs font-semibold focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/10 transition-all"
+                      [value]="item.cantidad"
+                      (change)="actualizarItem(item.id, +$any($event.target).value)"
+                    />
+                  </td>
+                  <td class="py-4 px-6 text-right font-bold text-slate-800">
+                    {{ item.subtotal | currency: 'PEN' : 'symbol' : '1.2-2' }}
+                  </td>
+                  <td class="py-4 px-6 text-center">
+                    <button
+                      (click)="eliminarItem(item.id)"
+                      class="w-8 h-8 rounded-lg bg-red-50 hover:bg-red-500 text-red-500 hover:text-white flex items-center justify-center transition-all duration-200 cursor-pointer border-0"
+                      title="Eliminar producto"
+                    >
+                      <i class="pi pi-trash text-sm"></i>
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Order Summary Card (Right side) -->
+      <div class="bg-white rounded-2xl border border-slate-100 shadow-premium p-6 sm:p-8 space-y-6">
+        <h3 class="text-lg font-bold text-slate-800 border-b border-slate-100 pb-4">Resumen de Compra</h3>
+
+        <!-- Payment Method -->
+        <div class="flex flex-col gap-2">
+          <label class="text-xs font-bold uppercase tracking-wider text-slate-500">Método de Pago</label>
+          <p-select
+            [options]="metodosPago()"
+            optionLabel="nombre"
+            optionValue="id"
+            placeholder="Seleccione un método"
+            styleClass="w-full rounded-xl border-slate-200"
+            (onChange)="metodoPagoSeleccionado.set($event.value)"
+          />
+        </div>
+
+        <!-- Costs breakdown -->
+        <div class="space-y-3 text-sm pt-2">
+          <div class="flex justify-between text-slate-500">
+            <span>Subtotal del carrito</span>
+            <span class="font-medium text-slate-700">{{ carrito()!.total | currency: 'PEN' : 'symbol' : '1.2-2' }}</span>
+          </div>
+          <div class="flex justify-between text-slate-500">
+            <span>Envío</span>
+            <span class="font-medium text-emerald-600">Gratis</span>
+          </div>
+          <div class="border-t border-slate-100 pt-4 flex justify-between items-baseline">
+            <span class="text-base font-bold text-slate-800">Total a pagar</span>
+            <span class="text-2xl font-extrabold text-brand-primary tracking-tight">
+              {{ carrito()!.total | currency: 'PEN' : 'symbol' : '1.2-2' }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex flex-col gap-3 pt-4">
+          <button
+            (click)="procesarPago()"
+            [disabled]="procesando() || !metodoPagoSeleccionado()"
+            class="w-full py-3 rounded-xl bg-brand-primary hover:bg-brand-primary-hover disabled:bg-slate-100 disabled:text-slate-400 text-white font-semibold text-sm transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 border-0 shadow-md shadow-brand-primary/10 disabled:shadow-none"
+          >
+            @if (procesando()) {
+              <i class="pi pi-spin pi-spinner"></i>
+            } @else {
+              <i class="pi pi-check"></i>
+            }
+            <span>Proceder al pago</span>
+          </button>
+
+          <button
+            (click)="vaciarCarrito()"
+            class="w-full py-3 rounded-xl border border-red-200 hover:bg-red-50 text-red-500 font-semibold text-sm transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 bg-transparent"
+          >
+            <i class="pi pi-trash"></i>
+            <span>Vaciar Carrito</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

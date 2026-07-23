@@ -54,6 +54,18 @@ public class AuthService {
         Usuario usuario = usuarioPort.findByCorreo(request.correo())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado."));
 
+        if (!usuario.requiere2FA()) {
+            String token = jwtUtil.generateToken(
+                    usuario.getCorreo(),
+                    usuario.getRol().getNombre()
+            );
+            return AuthResponse.conToken(
+                    token,
+                    usuario.getRol().getNombre(),
+                    usuario.getNombre()
+            );
+        }
+
         CodigoVerificacion codigo = codigoService.generarCodigo(usuario);
 
         try {
@@ -126,12 +138,12 @@ public class AuthService {
         nuevo.setActivo(true);
         nuevo.setRol(rolCliente);
 
-        usuarioPort.save(nuevo);
+        Usuario guardado = usuarioPort.save(nuevo);
 
         Cliente cliente = new Cliente();
         cliente.setTelefono(request.telefono());
         cliente.setDireccion(request.direccion());
-        cliente.setUsuario(nuevo);
+        cliente.setUsuario(guardado);
 
         clientePort.guardar(cliente);
 

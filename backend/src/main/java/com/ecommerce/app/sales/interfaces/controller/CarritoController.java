@@ -35,20 +35,20 @@ public class CarritoController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('Cliente')")
+    @PreAuthorize("hasAuthority('Cliente')")
     @Operation(summary = "Obtener carrito activo", description = "Retorna el carrito activo del cliente o crea uno nuevo si no existe")
     public ResponseEntity<CarritoResponse> obtenerCarritoActivo(@AuthenticationPrincipal UserDetails userDetails) {
         return ResponseEntity.ok(carritoService.obtenerCarritoActivo(obtenerClienteId(userDetails)));
     }
 
-    @PostMapping("/{clienteId}/items")
-    @PreAuthorize("hasRole('Cliente')")
+    @PostMapping("/items")
+    @PreAuthorize("hasAuthority('Cliente')")
     @Operation(summary = "Agregar item al carrito", description = "Agrega un producto al carrito o incrementa la cantidad si ya existe")
     public ResponseEntity<CarritoResponse> agregarItem(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody AgregarItemCarritoRequest request) {
         return ResponseEntity.ok(carritoService.agregarItem(obtenerClienteId(userDetails), request));
     }
 
-    @PreAuthorize("hasRole('Cliente')")
+    @PreAuthorize("hasAuthority('Cliente')")
     @PutMapping("/items/{itemId}")
     @Operation(summary = "Actualizar cantidad de item", description = "Modifica la cantidad de un item específico del carrito")
     public ResponseEntity<CarritoResponse> actualizarItem(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Integer itemId, @Valid @RequestBody ActualizarItemCarritoRequest request) {
@@ -56,14 +56,14 @@ public class CarritoController {
     }
 
     @DeleteMapping("/items/{itemId}")
-    @PreAuthorize("hasRole('Cliente')")
+    @PreAuthorize("hasAuthority('Cliente')")
     @Operation(summary = "Eliminar item del carrito", description = "Elimina un producto específico del carrito")
     public ResponseEntity<CarritoResponse> eliminarItem(@AuthenticationPrincipal UserDetails userDetails, @PathVariable Integer itemId) {
         return ResponseEntity.ok(carritoService.eliminarItem(obtenerClienteId(userDetails), itemId));
     }
 
     @DeleteMapping("/vaciar")
-    @PreAuthorize("hasRole('Cliente')")
+    @PreAuthorize("hasAuthority('Cliente')")
     @Operation(summary = "Vaciar carrito", description = "Elimina todos los items del carrito activo")
     public ResponseEntity<Void> vaciarCarrito(@AuthenticationPrincipal UserDetails userDetails) {
         carritoService.vaciarCarrito(obtenerClienteId(userDetails));

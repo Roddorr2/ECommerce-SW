@@ -1,0 +1,184 @@
+@use '../../../../../styles/abstracts/variables' as vars;
+
+.compras-container {
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 12px;
+  min-height: 70vh;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+
+  .header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e5e7eb;
+
+    h2 {
+      margin: 0;
+      color: vars.$primary-color;
+      font-size: 1.75rem;
+      font-weight: 600;
+    }
+  }
+
+  .form-container {
+    background: #f9f9f9;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+
+    h4 {
+      margin: 0 0 1.5rem;
+      font-weight: 600;
+      color: #333;
+    }
+  }
+
+  .items-section {
+    margin-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 1rem;
+  }
+
+  .items-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    h5 {
+      margin: 0;
+      font-weight: 600;
+      color: #333;
+    }
+  }
+
+  .item-row {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-end;
+    margin-bottom: 0.75rem;
+    padding: 0.75rem;
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+
+    .field {
+      flex: 1;
+      margin-bottom: 0;
+    }
+
+    .item-remove {
+      flex-shrink: 0;
+      margin-bottom: 0.25rem;
+    }
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    label {
+      font-weight: 600;
+      color: #495057;
+      font-size: 0.9rem;
+    }
+
+    .p-error {
+      color: #ef4444;
+      font-size: 0.85rem;
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .detalle-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: #f9f9f9;
+    border-radius: 8px;
+
+    p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #495057;
+    }
+  }
+
+  .badge {
+    padding: 0.35rem 0.85rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: inline-block;
+
+    &.bg-success {
+      background-color: #28a745;
+      color: #fff;
+    }
+    &.bg-warning {
+      background-color: #ffc107;
+      color: #212529;
+    }
+    &.bg-danger {
+      background-color: #dc3545;
+      color: #fff;
+    }
+    &.bg-secondary {
+      background-color: #6c757d;
+      color: #fff;
+    }
+  }
+
+  ::ng-deep .p-datatable {
+    .p-datatable-thead > tr > th {
+      background: vars.$primary-color;
+      color: white;
+      font-weight: 600;
+      padding: 1rem;
+    }
+
+    .p-datatable-tbody > tr:hover {
+      background: #f9fafb;
+    }
+
+    .p-datatable-tbody > tr > td {
+      padding: 0.75rem 1rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+
+    .header-section {
+      flex-direction: column;
+      gap: 1rem;
+      align-items: stretch;
+
+      button {
+        width: 100%;
+      }
+    }
+
+    .item-row {
+      flex-direction: column;
+    }
+
+    .detalle-info {
+      grid-template-columns: 1fr;
+    }
+  }
+}

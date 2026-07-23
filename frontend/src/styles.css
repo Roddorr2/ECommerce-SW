@@ -1,12 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
 /* Tailwind base */
 @import 'tailwindcss';
 @import 'tailwindcss-primeui';
 
+@theme {
+  --font-sans: 'Outfit', sans-serif;
+  --color-brand-primary: #6A5ACD;
+  --color-brand-primary-hover: #5748b5;
+  --color-brand-secondary: #FF6F61;
+  --color-brand-secondary-hover: #e55c4e;
+  --color-background-base: #f8f9fa;
+  
+  --shadow-premium: 0 4px 20px -2px rgba(106, 90, 205, 0.08), 0 2px 8px -1px rgba(0, 0, 0, 0.04);
+  --shadow-premium-lg: 0 10px 30px -5px rgba(106, 90, 205, 0.12), 0 4px 12px -2px rgba(0, 0, 0, 0.06);
+}
 
-/* Sticky Footer Layout */
+/* Global PrimeNG/PrimeUI CSS Theme Variables Overrides */
+:root {
+  --p-primary-color: #6A5ACD !important;
+  --p-primary-hover-color: #5748b5 !important;
+  --p-primary-contrast-color: #ffffff !important;
+  
+  --p-button-success-background: #6A5ACD !important;
+  --p-button-success-hover-background: #5748b5 !important;
+  --p-button-success-border-color: #6A5ACD !important;
+  --p-button-success-hover-border-color: #5748b5 !important;
+  
+  --p-button-primary-background: #6A5ACD !important;
+  --p-button-primary-hover-background: #5748b5 !important;
+  --p-button-primary-border-color: #6A5ACD !important;
+  --p-button-primary-hover-border-color: #5748b5 !important;
+}
+
+/* Override PrimeNG success buttons directly */
+.p-button-success {
+  background-color: var(--color-brand-primary) !important;
+  border-color: var(--color-brand-primary) !important;
+  color: white !important;
+}
+.p-button-success:hover {
+  background-color: var(--color-brand-primary-hover) !important;
+  border-color: var(--color-brand-primary-hover) !important;
+}
+
+/* Base resets & layout */
 html, body {
   height: 100%;
   margin: 0;
+  font-family: 'Outfit', sans-serif;
+  background-color: var(--color-background-base);
+  color: #1f2937; /* text-gray-800 */
 }
 
 body {
@@ -24,4 +68,97 @@ router-outlet + * {
   display: flex;
   flex-direction: column;
   flex: 1;
+}
+
+/* Micro-animations and custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #c7d2fe;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #818cf8;
+}
+
+/* Custom Global overrides for PrimeNG Table */
+.p-datatable {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #f1f5f9 !important; /* border-slate-100 */
+  box-shadow: var(--shadow-premium) !important;
+  overflow: hidden;
+}
+
+.p-datatable-thead > tr > th {
+  background-color: #f8fafc !important; /* bg-slate-50 */
+  color: #64748b !important; /* text-slate-500 */
+  font-weight: 700 !important;
+  font-size: 0.75rem !important; /* text-xs */
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  padding: 0.625rem 1rem !important;
+  border-bottom: 1px solid #f1f5f9 !important; /* border-slate-100 */
+}
+
+.p-datatable-tbody > tr {
+  background-color: transparent !important;
+  transition: background-color 0.2s !important;
+}
+
+.p-datatable-tbody > tr:hover {
+  background-color: rgba(248, 250, 252, 0.5) !important; /* hover:bg-slate-50/50 */
+}
+
+.p-datatable-tbody > tr > td {
+  padding: 0.625rem 1rem !important;
+  color: #334155 !important; /* text-slate-700 */
+  font-size: 0.875rem !important; /* text-sm */
+  border-bottom: 1px solid #f1f5f9 !important;
+}
+
+.p-datatable-tfoot > tr > td {
+  padding: 0.625rem 1rem !important;
+  border-top: 1px solid #f1f5f9 !important;
+}
+
+/* Remove vertical borders from gridlines tables for premium look */
+.p-datatable-gridlines .p-datatable-thead > tr > th,
+.p-datatable-gridlines .p-datatable-tbody > tr > td {
+  border-left: 0 !important;
+  border-right: 0 !important;
+}
+
+/* Pagination Styling */
+.p-paginator {
+  background: #f8fafc !important;
+  border-top: 1px solid #f1f5f9 !important;
+  padding: 0.75rem 1rem !important;
+}
+
+.p-paginator-element {
+  border-radius: 8px !important;
+  color: #64748b !important;
+  transition: all 0.2s !important;
+}
+
+.p-paginator-element:hover {
+  background-color: #e2e8f0 !important;
+  color: var(--color-brand-primary) !important;
+}
+
+.p-paginator-element.p-highlight {
+  background-color: var(--color-brand-primary) !important;
+  color: white !important;
+  font-weight: 700 !important;
+}
+
+/* Toast Notification positioning to clear the fixed header */
+.p-toast {
+  top: 90px !important;
+  z-index: 9999 !important;
 }
