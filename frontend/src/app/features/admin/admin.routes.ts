@@ -1,90 +1,39 @@
 import { Routes } from '@angular/router';
-import { DashboardAdmin } from './dashboard-admin/dashboard-admin';
-import { ProductosPage } from './productos/pages/productos/productos';
-import { CategoriaPage } from './productos/pages/categoria/categoria';
-import { MetodoPagoPage } from './compras/pages/metodo-pago/metodo-pago';
-import { CompraPage } from './compras/pages/compra/compra';
-import { CompraDetailsPage } from './compras/pages/compra-details/compra-details';
-import { ProveedorPage } from './proveedores/pages/proveedor/proveedor';
-import { TipoProveedorPage } from './proveedores/pages/tipo-proveedor/tipo-proveedor';
-import { RolPage } from './usuarios/pages/rol/rol';
-import { AreaPage } from './rr_hh/pages/area/area';
-import { CargoPage } from './rr_hh/pages/cargo/cargo';
-import { UsuariosPage } from './usuarios/pages/usuario/usuario';
-import { EmpleadoPage } from './usuarios/pages/empleado/empleado';
-import { OrdenesAdminPage } from './ordenes/pages/ordenes/ordenes';
-import { ClientePage } from './usuarios/pages/clientes/clientes';
+import { DashboardAdminComponent } from './presentation/pages/dashboard-admin/dashboard-admin.component';
+import { PerfilAdminComponent } from './presentation/pages/perfil-admin/perfil-admin.component';
+import { UsuarioComponent } from './presentation/pages/usuario/usuario.component';
+import { RolComponent } from './presentation/pages/rol/rol.component';
+import { AreaComponent } from './presentation/pages/area/area.component';
+import { CargoComponent } from './presentation/pages/cargo/cargo.component';
+import { EmpleadoComponent } from './presentation/pages/empleado/empleado.component';
+import { ClienteComponent } from './presentation/pages/cliente/cliente.component';
 
 export const ADMIN_ROUTES: Routes = [
   {
     path: '',
-    component: DashboardAdmin,
+    component: DashboardAdminComponent,
     children: [
-      { 
-        path: '',
-        redirectTo: 'categorias',
-        pathMatch: 'full' 
-      },
-
-      { 
-        path: 'productos',
-        component: ProductosPage
-      },
-
-      { 
-        path: 'categorias',
-        component: CategoriaPage
-      },
-
-      { 
-        path: 'metodos-pago',
-        component: MetodoPagoPage 
+      { path: 'dashboard', redirectTo: '/admin/perfil', pathMatch: 'full' },
+      { path: 'perfil', component: PerfilAdminComponent, title: 'Datos Personales' },
+      {
+        path: 'catalog',
+        loadChildren: () => import('../catalog/catalog.routes').then(m => m.CATALOG_ROUTES),
       },
       {
-        path: 'compras',
-        component: CompraPage
+        path: 'purchases',
+        loadChildren: () => import('../purchases/purchases.routes').then(m => m.PURCHASES_ROUTES),
       },
       {
-        path: 'compra-detalles',
-        component: CompraDetailsPage
+        path: 'sales',
+        loadChildren: () => import('../sales/sales.routes').then(m => m.SALES_ROUTES),
       },
-      {
-        path: 'proveedor',
-        component: ProveedorPage
-      },
-      {
-        path: 'tipo-proveedor',
-        component: TipoProveedorPage
-      },
-      {
-        path: 'roles',
-        component: RolPage
-      },
-       {
-        path: 'areas',
-        component: AreaPage
-      },
-      {
-        path: 'cargos',
-        component: CargoPage  
-      },
-      {
-        path: 'usuarios',
-        component: UsuariosPage
-      },
-      {
-        path: 'empleados',
-        component: EmpleadoPage
-      },
-      {
-        path: 'ventas',
-        component: OrdenesAdminPage
-      },
-      {
-        path: 'clientes',
-        component: ClientePage
-      }
-      
+      { path: 'areas',     component: AreaComponent,     title: 'Áreas' },
+      { path: 'cargos',    component: CargoComponent,    title: 'Cargos' },
+      { path: 'empleados', component: EmpleadoComponent, title: 'Empleados' },
+      { path: 'roles',     component: RolComponent,      title: 'Roles' },
+      { path: 'usuarios',  component: UsuarioComponent,  title: 'Usuarios' },
+      { path: 'clientes',  component: ClienteComponent, title: 'Clientes' },
+      { path: '', redirectTo: '/admin/perfil', pathMatch: 'full' },
     ],
   },
 ];
