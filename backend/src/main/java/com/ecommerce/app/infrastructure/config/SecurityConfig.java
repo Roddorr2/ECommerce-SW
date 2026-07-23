@@ -63,10 +63,14 @@ public class SecurityConfig {
                                 "/swagger-ui.html",
                                 "/scalar/**",
                                 "/api/auth/login",
+                                "/api/auth/login/verify",
                                 "/api/auth/register",
                                 "/imagenes/**",
                                 "/api/productos",
-                                "/api/productos/**"  
+                                "/api/productos/**",
+                                "/api/soporte",
+                                "/api/soporte/**",
+                                "/error"  
                         ).permitAll()
                         .requestMatchers("/admin/**").hasAuthority("Administrador")
                         .requestMatchers("/cliente/**").hasAuthority("Cliente")

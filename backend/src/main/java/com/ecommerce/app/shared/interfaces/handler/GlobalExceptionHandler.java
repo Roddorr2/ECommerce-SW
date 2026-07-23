@@ -5,12 +5,14 @@ import java.security.SignatureException;
 import java.sql.SQLIntegrityConstraintViolationException;
 
 import io.jsonwebtoken.ExpiredJwtException;
-import org.hibernate.TransientPropertyValueException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.security.authentication.BadCredentialsException;
 
 import com.ecommerce.app.auth.application.dto.response.ApiErrorResponse;
 
@@ -92,11 +94,29 @@ public class GlobalExceptionHandler {
     	return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
 
-    @ExceptionHandler(TransientPropertyValueException.class)
-    public ResponseEntity<ApiErrorResponse> handleTransientPropertyValue(TransientPropertyValueException ex) {
-        String mensaje = String.format("La propiedad '%s' hace referencia a un objeto transitorio no guardado de tipo '%s'.",
-                ex.getPropertyName(), ex.getTransientEntityName());
-        ApiErrorResponse error = new ApiErrorResponse(HttpStatus.BAD_REQUEST.value(), mensaje);
+    @ExceptionHandler(InvalidDataAccessApiUsageException.class)
+    public ResponseEntity<ApiErrorResponse> handleTransientPropertyValue(InvalidDataAccessApiUsageException ex) {
+        ApiErrorResponse error = new ApiErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                "Error: No se puede guardar porque una entidad relacionada no está persistida."
+        );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(InvalidDataAccessResourceUsageException.class)
+    public ResponseEntity<ApiErrorResponse> handleDataAccessResourceUsage(InvalidDataAccessResourceUsageException ex) {
+        ApiErrorResponse error = new ApiErrorResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "Error en la base de datos: la estructura o los datos solicitados son inválidos o no existen.");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+    }
+    
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ApiErrorResponse> handleBadCredentials(BadCredentialsException ex) {
+        ApiErrorResponse error = new ApiErrorResponse(
+                HttpStatus.UNAUTHORIZED.value(),
+                "Correo o contraseña incorrectos."
+        );
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
     }
 }
