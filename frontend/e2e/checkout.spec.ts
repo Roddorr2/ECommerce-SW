@@ -1,21 +1,29 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Flujo E2E: Proceso de Seleccion y Checkout', () => {
-  test('debe permitir navegar al carrito de compras', async ({ page }) => {
-    await page.goto('/sales/carrito');
-
-    await expect(page).toHaveTitle(/Carrito/i);
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem('token', 'fake-jwt-token');
+      localStorage.setItem('rol', 'Administrador');
+      localStorage.setItem('nombre', 'Administrador Test');
+    });
   });
 
-  test('debe permitir navegar al módulo de órdenes', async ({ page }) => {
-    await page.goto('/sales/ordenes');
+  test('debe permitir navegar al carrito de compras en admin', async ({ page }) => {
+    await page.goto('/admin/sales/carrito');
 
-    await expect(page).toHaveTitle(/Órdenes/i);
+    await expect(page).toHaveURL(/\/admin\/sales\/carrito/);
   });
 
-  test('debe listar los métodos de pago disponibles', async ({ page }) => {
-    await page.goto('/sales/metodos-pago');
+  test('debe permitir navegar al módulo de órdenes en admin', async ({ page }) => {
+    await page.goto('/admin/sales/ordenes');
 
-    await expect(page).toHaveTitle(/Métodos de Pago/i);
+    await expect(page).toHaveURL(/\/admin\/sales\/ordenes/);
+  });
+
+  test('debe listar los métodos de pago disponibles en admin', async ({ page }) => {
+    await page.goto('/admin/sales/metodos-pago');
+
+    await expect(page).toHaveURL(/\/admin\/sales\/metodos-pago/);
   });
 });

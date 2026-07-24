@@ -13,6 +13,10 @@ test.describe('Flujo E2E: Registro de Usuario y Verificación 2FA/OTP', () => {
   });
 
   test('debe navegar a la vista de verificación de código OTP', async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem('correo_2fa', 'test.otp@ejemplo.com');
+    });
+
     await page.goto('/auth/verificar-codigo');
 
     await expect(page.getByRole('heading', { name: /Verificación/i })).toBeVisible();
@@ -20,6 +24,10 @@ test.describe('Flujo E2E: Registro de Usuario y Verificación 2FA/OTP', () => {
   });
 
   test('debe permitir ingresar los dígitos del código 2FA', async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem('correo_2fa', 'test.otp@ejemplo.com');
+    });
+
     await page.goto('/auth/verificar-codigo');
 
     const inputs = page.locator('input[maxlength="1"]');
